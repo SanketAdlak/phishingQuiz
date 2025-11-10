@@ -1,24 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import Question from './Question';
 
-const Quiz = () => {
-  const [questions, setQuestions] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+const Quiz = ({ onComplete }) => {
+  const [question, setQuestion] = useState(null);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [results, setResults] = useState([]);
+  const [totalQuestions, setTotalQuestions] = useState(0);
 
   useEffect(() => {
-    fetch('/questions.json')
+    // This is a simplified way to get the total number of questions.
+    // In a real application, you might have a separate endpoint for this.
+    setTotalQuestions(3);
+    fetch(`http://localhost:3001/api/question/${currentQuestionIndex}`)
       .then((res) => res.json())
-      .then((data) => setQuestions(data));
-  }, []);
+      .then((data) => setQuestion(data));
+  }, [currentQuestionIndex]);
 
   const handleAnswer = (resultData) => {
-    const currentQuestion = questions[currentQuestionIndex];
-    const isCorrect = currentQuestion.correctAnswer === resultData.answer;
-
     const result = {
-      questionId: currentQuestion.id,
-      isCorrect,
+      questionId: question.id,
+      answer: resultData.answer,
       timeTaken: resultData.timeTaken,
       clickedPhishingLink: resultData.clickedPhishingLink,
     };
@@ -27,38 +28,36 @@ const Quiz = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
 
-  const handleSubmit = () => {
-    fetch('http://localhost:3001/api/submit', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(results),
-    })
-      .then((response) => response.text())
-      .then((data) => console.log(data))
-      .catch((error) => console.error('Error:', error));
-  };
+  useEffect(() => {
+    if (results.length > 0 && results.length === totalQuestions) {
+      fetch('http://localhost:3001/api/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-API-KEY': 'your-default-api-key',
+        },
+        body: JSON.stringify(results),
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data);
+          onComplete();
+        })
+        .catch((error) => console.error('Error:', error));
+    }
+  }, [results, totalQuestions, onComplete]);
 
-  if (questions.length === 0) {
+  if (!question) {
     return <div>Loading...</div>;
   }
 
-  if (currentQuestionIndex >= questions.length) {
-    return (
-      <div>
-        <h2>Quiz finished!</h2>
-        <button onClick={handleSubmit}>Submit</button>
-      </div>
-    );
+  if (results.length === totalQuestions) {
+    return <div>Submitting results...</div>;
   }
 
   return (
     <div className="quiz">
-      <Question
-        question={questions[currentQuestionIndex]}
-        onAnswer={handleAnswer}
-      />
+      <Question question={question} onAnswer={handleAnswer} />
     </div>
   );
 };
