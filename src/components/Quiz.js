@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import Question from './Question';
 
 const Quiz = ({ onComplete }) => {
@@ -6,6 +7,7 @@ const Quiz = ({ onComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [results, setResults] = useState([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const questionRef = useRef(null);
 
   useEffect(() => {
     // This is a simplified way to get the total number of questions.
@@ -57,7 +59,16 @@ const Quiz = ({ onComplete }) => {
 
   return (
     <div className="quiz">
-      <Question question={question} onAnswer={handleAnswer} />
+      <SwitchTransition>
+        <CSSTransition
+          key={currentQuestionIndex}
+          nodeRef={questionRef}
+          timeout={500}
+          classNames="question"
+        >
+          <Question ref={questionRef} question={question} onAnswer={handleAnswer} />
+        </CSSTransition>
+      </SwitchTransition>
     </div>
   );
 };

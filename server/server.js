@@ -68,24 +68,28 @@ app.post(
     // Atomically append to the CSV file
     const responseId = `response_${Date.now()}`;
     const responseSubmitTime = new Date().toISOString();
-    let csvRow = `${responseId},${responseSubmitTime}`;
     const csvHeader = ['responseId', 'responseSubmitTime'];
+    const rowData = {
+      responseId,
+      responseSubmitTime,
+    };
 
     newResults.forEach((result) => {
       const questionId = result.questionId;
       const isCorrect = answers[questionId] === result.answer;
       const questionHeaderId = `Q${questionId}`;
 
-      csvHeader.push(
-        `Answer${questionHeaderId}`,
-        `timeTaken${questionHeaderId}`,
-        `ClickOnPhishingContent${questionHeaderId}`
-      );
-      csvRow += `,${isCorrect ? 'correct' : 'incorrect'},${
-        result.timeTaken
-      },${result.clickedPhishingLink}`;
+      const answerHeader = `Answer${questionHeaderId}`;
+      const timeTakenHeader = `timeTaken${questionHeaderId}`;
+      const phishingClickHeader = `ClickOnPhishingContent${questionHeaderId}`;
+
+      csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader);
+      rowData[answerHeader] = isCorrect ? 'correct' : 'incorrect';
+      rowData[timeTakenHeader] = result.timeTaken;
+      rowData[phishingClickHeader] = result.clickedPhishingLink;
     });
 
+    const csvRow = csvHeader.map(header => rowData[header]).join(',');
     const csvLine = csvRow + '\n';
     const csvHeaderLine = csvHeader.join(',') + '\n';
 
