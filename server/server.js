@@ -148,8 +148,7 @@ app.get('/api/question/:id', (req, res) => {
     return res.status(404).send('Question not found');
   }
 
-  const { correctAnswer, ...questionWithoutAnswer } = question;
-  res.json(questionWithoutAnswer);
+  res.json(question);
 });
 
 app.listen(port, () => {
