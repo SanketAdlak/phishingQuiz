@@ -23,5 +23,61 @@
       "addToast": true
 
     }
+  }, {
+    "id": 4,
+    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
+    "scenario": {
+      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
+      "addToast": true
+
+    }
+  }, {
+    "id": 5,
+    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
+    "scenario": {
+      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
+      "addToast": true
+
+    }
+  }, {
+    "id": 6,
+    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
+    "scenario": {
+      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
+      "addToast": true
+
+    }
+  }, {
+    "id": 7,
+    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
+    "scenario": {
+      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
+      "addToast": true
+
+    }
+  }, {
+    "id": 8,
+    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
+    "scenario": {
+      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
+      "addToast": true
+
+    }
+  }, {
+    "id": 9,
+    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
+    "scenario": {
+      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
+      "addToast": true
+
+    }
+  }, {
+    "id": 10,
+    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
+    "scenario": {
+      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
+      "addToast": true
+
+    }
   }
 ]

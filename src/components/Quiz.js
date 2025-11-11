@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import Question from './Question';
+import ProgressBar from './ProgressBar';
 
 const Quiz = ({ onComplete }) => {
   const [question, setQuestion] = useState(null);
@@ -10,13 +11,19 @@ const Quiz = ({ onComplete }) => {
   const questionRef = useRef(null);
 
   useEffect(() => {
-    // This is a simplified way to get the total number of questions.
-    // In a real application, you might have a separate endpoint for this.
-    setTotalQuestions(3);
+    fetch('http://localhost:3001/api/questions/count')
+      .then((res) => res.json())
+      .then((data) => setTotalQuestions(data.totalQuestions));
+  }, []);
+
+  useEffect(() => {
+    if (currentQuestionIndex > totalQuestions && totalQuestions > 0) {
+      return;
+    }
     fetch(`http://localhost:3001/api/question/${currentQuestionIndex}`)
       .then((res) => res.json())
       .then((data) => setQuestion(data));
-  }, [currentQuestionIndex]);
+  }, [currentQuestionIndex, totalQuestions]);
 
   const handleAnswer = (resultData) => {
     const result = {
@@ -69,6 +76,7 @@ const Quiz = ({ onComplete }) => {
           <Question ref={questionRef} question={question} onAnswer={handleAnswer} />
         </CSSTransition>
       </SwitchTransition>
+      <ProgressBar current={currentQuestionIndex} total={totalQuestions} />
     </div>
   );
 };

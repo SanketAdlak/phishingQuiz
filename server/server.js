@@ -140,6 +140,10 @@ app.post(
 
 const questions = require('./questions.json');
 
+app.get('/api/questions/count', (req, res) => {
+  res.json({ totalQuestions: questions.length });
+});
+
 app.get('/api/question/:id', (req, res) => {
   const questionId = parseInt(req.params.id, 10);
   const question = questions.find((q) => q.id === questionId);
