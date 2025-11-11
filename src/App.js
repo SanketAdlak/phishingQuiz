@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Quiz from './components/Quiz';
 import Welcome from './components/Welcome';
 import ThankYou from './components/ThankYou';
@@ -7,11 +7,19 @@ import './App.css';
 function App() {
   const [view, setView] = useState('welcome');
 
+  useEffect(() => {
+    const quizCompleted = localStorage.getItem('quizCompleted');
+    if (quizCompleted) {
+      setView('thankyou');
+    }
+  }, []);
+
   const handleStart = () => {
     setView('quiz');
   };
 
   const handleQuizComplete = () => {
+    localStorage.setItem('quizCompleted', 'true');
     setView('thankyou');
   };
 

@@ -2,10 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 
 const Question = ({ question, onAnswer }) => {
   const [startTime, setStartTime] = useState(0);
+  const [clickedPhishing, setClickedPhishing] = useState(false);
   const scenarioRef = useRef(null);
 
   useEffect(() => {
     setStartTime(Date.now());
+    setClickedPhishing(false);
 
     if (scenarioRef.current) {
       const links = scenarioRef.current.querySelectorAll('a');
@@ -26,12 +28,7 @@ const Question = ({ question, onAnswer }) => {
 
   const handlePhishingLinkClick = (e) => {
     e.preventDefault();
-    const timeTaken = (Date.now() - startTime) / 1000;
-    onAnswer({
-      answer: 'phishing',
-      timeTaken,
-      clickedPhishingLink: true,
-    });
+    setClickedPhishing(true);
   };
 
   const handleAnswer = (answer) => {
@@ -39,7 +36,7 @@ const Question = ({ question, onAnswer }) => {
     onAnswer({
       answer,
       timeTaken,
-      clickedPhishingLink: false,
+      clickedPhishingLink: clickedPhishing,
     });
   };
 

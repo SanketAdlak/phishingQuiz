@@ -1,2 +1,7 @@
 responseId,responseSubmitTime,AnswerQ1,timeTakenQ1,ClickOnPhishingContentQ1,AnswerQ2,timeTakenQ2,ClickOnPhishingContentQ2,AnswerQ3,timeTakenQ3,ClickOnPhishingContentQ3
 response_1762789293974,2025-11-10T15:41:33.974Z,incorrect,1.607,false,correct,0.453,false,correct,0.559,false
+response_1762789837430,2025-11-10T15:50:37.430Z,incorrect,4.137,false,correct,10,false,correct,1.602,false
+response_1762790626560,2025-11-10T16:03:46.560Z,incorrect,1.263,false,correct,0.497,false,correct,1.181,false
+response_1762791534547,2025-11-10T16:18:54.547Z,correct,2.904,false,incorrect,0.85,false,correct,0.159,false
+response_1762792272908,2025-11-10T16:31:12.908Z,incorrect,3.664,false,correct,1.57,false,correct,0.601,false
+response_1762831721071,2025-11-11T03:28:41.071Z,correct,2.097,false,incorrect,1.068,false,incorrect,0.505,false
