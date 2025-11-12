@@ -7,37 +7,90 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
   const urlViewedRef = useRef(false);
   const scenarioRef = useRef(null);
 
+  // Function to handle messages from the iframe
+  const handleIframeMessage = (event) => {
+    // Ensure the message is from the expected iframe (optional, but good practice)
+    // For srcdoc, origin will be the parent's origin.
+    if (event.source === scenarioRef.current.contentWindow) {
+      if (event.data.type === 'phishingClick') {
+        handlePhishingLinkClick(event.data.event);
+      } else if (event.data.type === 'urlView') {
+        handleUrlView(event.data.event);
+      } else if (event.data.type === 'iframeHeight') {
+        // Update iframe height based on content
+        if (scenarioRef.current) {
+          scenarioRef.current.style.height = `${event.data.height}px`;
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     setStartTime(Date.now());
     clickedPhishingRef.current = false;
     urlViewedRef.current = false;
 
-    const scenarioEl = scenarioRef.current;
-    if (scenarioEl) {
-      scenarioEl.addEventListener('click', handlePhishingLinkClick);
-      scenarioEl.addEventListener('mouseover', handleUrlView);
-    }
+    const iframe = scenarioRef.current;
 
-    return () => {
-      if (scenarioEl) {
-        scenarioEl.removeEventListener('click', handlePhishingLinkClick);
-        scenarioEl.removeEventListener('mouseover', handleUrlView);
+    const injectScript = () => {
+      if (iframe && iframe.contentDocument) {
+        const script = iframe.contentDocument.createElement('script');
+        script.type = 'text/javascript';
+        script.innerHTML = `
+          document.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+              e.preventDefault(); // Prevent navigation within the iframe
+              window.parent.postMessage({ type: 'phishingClick', event: { targetTagName: 'A' } }, '*');
+            }
+          });
+
+          document.addEventListener('mouseover', (e) => {
+            if (e.target.tagName === 'A') {
+              window.parent.postMessage({ type: 'urlView', event: { targetTagName: 'A' } }, '*');
+            }
+          });
+
+          // Observe content height and report to parent
+          const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+              window.parent.postMessage({ type: 'iframeHeight', height: entry.contentRect.height }, '*');
+            }
+          });
+          resizeObserver.observe(document.body);
+        `;
+        iframe.contentDocument.body.appendChild(script);
       }
     };
-  }, [question]);
+
+    // Attach load listener to iframe
+    if (iframe) {
+      iframe.onload = injectScript;
+    }
+
+    // Add message listener to window
+    window.addEventListener('message', handleIframeMessage);
+
+    return () => {
+      // Clean up message listener
+      window.removeEventListener('message', handleIframeMessage);
+      if (iframe) {
+        iframe.onload = null; // Remove iframe load listener
+      }
+    };
+  }, [question]); // Re-run effect when question changes
 
   const handlePhishingLinkClick = (e) => {
-    e.preventDefault();
+    // e.preventDefault(); // Already prevented in iframe script
     clickedPhishingRef.current = true;
-    if (question.scenario.isPhishing) {
-      toast.warn(question.scenario.toastMessage);
-    } else {
-      toast.success(question.scenario.toastMessage);
-    }
+    // if (question.scenario.isPhishing) {
+    //   toast.warn(question.scenario.toastMessage);
+    // } else {
+    //   toast.success(question.scenario.toastMessage);
+    // }
   };
 
   const handleUrlView = (e) => {
-    if (e.target.tagName === 'A') {
+    if (e.targetTagName === 'A') {
       urlViewedRef.current = true;
     }
   };
@@ -59,10 +112,11 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
         <h2>Question {question.id}</h2>
         <p>{question.description}</p>
       </div>
-      <div
-        className="scenario"
+      <iframe
         ref={scenarioRef}
-        dangerouslySetInnerHTML={{ __html: question.scenario.html }}
+        title="scenario-content"
+        srcDoc={question.scenario.html}
+        style={{ width: '80%', border: 'none', overflow: 'hidden' }} // Removed fixed height, added overflow hidden
       />
       <div className="answers">
         <button className="legitimate-btn" onClick={() => handleAnswer('legitimate')}>Legit</button>

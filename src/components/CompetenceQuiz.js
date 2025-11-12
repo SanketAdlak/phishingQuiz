@@ -3,7 +3,7 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import Question from './Question';
 import ProgressBar from './ProgressBar';
 
-const Quiz = ({ onComplete }) => {
+const CompetenceQuiz = ({ onComplete, confidenceResults }) => {
   const [question, setQuestion] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [results, setResults] = useState([]);
@@ -28,11 +28,9 @@ const Quiz = ({ onComplete }) => {
 
   const handleAnswer = (resultData) => {
     const result = {
+      ...resultData,
       questionId: question.id,
-      answer: resultData.answer,
-      timeTaken: resultData.timeTaken,
-      clickedPhishingLink: resultData.clickedPhishingLink,
-      urlViewed: resultData.urlViewed,
+      type: 'competence',
     };
 
     setResults([...results, result]);
@@ -42,13 +40,13 @@ const Quiz = ({ onComplete }) => {
   useEffect(() => {
     if (results.length > 0 && results.length === totalQuestions && !isSubmittingRef.current) {
       isSubmittingRef.current = true;
+      const allResults = [...confidenceResults, ...results];
       fetch('http://localhost:3001/api/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-API-KEY': 'your-default-api-key',
         },
-        body: JSON.stringify(results),
+        body: JSON.stringify(allResults),
       })
         .then((response) => response.text())
         .then((data) => {
@@ -57,7 +55,7 @@ const Quiz = ({ onComplete }) => {
         })
         .catch((error) => console.error('Error:', error));
     }
-  }, [results, totalQuestions, onComplete]);
+  }, [results, totalQuestions, onComplete, confidenceResults]);
 
   if (!question) {
     return <div>Loading...</div>;
@@ -69,6 +67,7 @@ const Quiz = ({ onComplete }) => {
 
   return (
     <div className="quiz">
+      <h1>Competence Test</h1>
       <SwitchTransition>
         <CSSTransition
           key={currentQuestionIndex}
@@ -84,4 +83,4 @@ const Quiz = ({ onComplete }) => {
   );
 };
 
-export default Quiz;
+export default CompetenceQuiz;
