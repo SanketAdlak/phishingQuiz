@@ -8,6 +8,7 @@ const Quiz = ({ onComplete }) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [results, setResults] = useState([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
+  const isSubmittingRef = useRef(false);
   const questionRef = useRef(null);
 
   useEffect(() => {
@@ -31,6 +32,7 @@ const Quiz = ({ onComplete }) => {
       answer: resultData.answer,
       timeTaken: resultData.timeTaken,
       clickedPhishingLink: resultData.clickedPhishingLink,
+      urlViewed: resultData.urlViewed,
     };
 
     setResults([...results, result]);
@@ -38,7 +40,8 @@ const Quiz = ({ onComplete }) => {
   };
 
   useEffect(() => {
-    if (results.length > 0 && results.length === totalQuestions) {
+    if (results.length > 0 && results.length === totalQuestions && !isSubmittingRef.current) {
+      isSubmittingRef.current = true;
       fetch('http://localhost:3001/api/submit', {
         method: 'POST',
         headers: {

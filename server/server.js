@@ -33,14 +33,14 @@ app.use(bodyParser.json());
 const resultsFilePath = path.join(__dirname, 'results.json');
 const csvFilePath = path.join(__dirname, 'results.csv');
 
-// Middleware for API key authentication
-const apiKeyAuth = (req, res, next) => {
-  const apiKey = req.get('X-API-KEY');
-  if (!apiKey || apiKey !== API_KEY) {
-    return res.status(401).send('Unauthorized');
-  }
-  next();
-};
+// // Middleware for API key authentication
+// const apiKeyAuth = (req, res, next) => {
+//   const apiKey = req.get('X-API-KEY');
+//   if (!apiKey || apiKey !== 'your-default-api-key') {
+//     return res.status(401).send('Unauthorized');
+//   }
+//   next();
+// };
 
 const answers = require('./answers.json');
 
@@ -51,11 +51,12 @@ const submissionValidationRules = [
   body('*.answer').isString(),
   body('*.timeTaken').isFloat(),
   body('*.clickedPhishingLink').isBoolean(),
+  body('*.urlViewed').isBoolean(),
 ];
 
 app.post(
   '/api/submit',
-  apiKeyAuth,
+  // apiKeyAuth,
   submissionValidationRules,
   (req, res) => {
     const errors = validationResult(req);
@@ -82,11 +83,13 @@ app.post(
       const answerHeader = `Answer${questionHeaderId}`;
       const timeTakenHeader = `timeTaken${questionHeaderId}`;
       const phishingClickHeader = `ClickOnPhishingContent${questionHeaderId}`;
+      const urlViewedHeader = `urlViewed${questionHeaderId}`;
 
-      csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader);
+      csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader, urlViewedHeader);
       rowData[answerHeader] = isCorrect ? 'correct' : 'incorrect';
       rowData[timeTakenHeader] = result.timeTaken;
       rowData[phishingClickHeader] = result.clickedPhishingLink;
+      rowData[urlViewedHeader] = result.urlViewed;
     });
 
     const csvRow = csvHeader.map(header => rowData[header]).join(',');
@@ -153,6 +156,15 @@ app.get('/api/question/:id', (req, res) => {
   }
 
   res.json(question);
+});
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../build')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 
 app.listen(port, () => {

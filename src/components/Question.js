@@ -4,20 +4,24 @@ import { toast } from 'react-toastify';
 const Question = forwardRef(({ question, onAnswer }, ref) => {
   const [startTime, setStartTime] = useState(0);
   const clickedPhishingRef = useRef(false);
+  const urlViewedRef = useRef(false);
   const scenarioRef = useRef(null);
 
   useEffect(() => {
     setStartTime(Date.now());
     clickedPhishingRef.current = false;
+    urlViewedRef.current = false;
 
     const scenarioEl = scenarioRef.current;
     if (scenarioEl) {
       scenarioEl.addEventListener('click', handlePhishingLinkClick);
+      scenarioEl.addEventListener('mouseover', handleUrlView);
     }
 
     return () => {
       if (scenarioEl) {
         scenarioEl.removeEventListener('click', handlePhishingLinkClick);
+        scenarioEl.removeEventListener('mouseover', handleUrlView);
       }
     };
   }, [question]);
@@ -25,8 +29,14 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
   const handlePhishingLinkClick = (e) => {
     e.preventDefault();
     clickedPhishingRef.current = true;
-    if (question.scenario.addToast) {
-      toast.warn('Do you really want to click on this URL? You should not click on unverified URLs.');
+    if (question.isPhishing) {
+      toast.warn('This is a suspicious URL. You should not click on unverified URLs.');
+    }
+  };
+
+  const handleUrlView = (e) => {
+    if (e.target.tagName === 'A') {
+      urlViewedRef.current = true;
     }
   };
 
@@ -36,6 +46,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
       answer,
       timeTaken,
       clickedPhishingLink: clickedPhishingRef.current,
+      urlViewed: urlViewedRef.current,
     });
     toast.success('Response received!');
   };
