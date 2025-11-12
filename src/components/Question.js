@@ -37,6 +37,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
         const script = iframe.contentDocument.createElement('script');
         script.type = 'text/javascript';
         script.innerHTML = `
+          let hoverTimeout;
           document.addEventListener('click', (e) => {
             if (e.target.tagName === 'A') {
               e.preventDefault(); // Prevent navigation within the iframe
@@ -46,7 +47,15 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
 
           document.addEventListener('mouseover', (e) => {
             if (e.target.tagName === 'A') {
-              window.parent.postMessage({ type: 'urlView', event: { targetTagName: 'A' } }, '*');
+              hoverTimeout = setTimeout(() => {
+                window.parent.postMessage({ type: 'urlView', event: { targetTagName: 'A' } }, '*');
+              }, 500);
+            }
+          });
+
+          document.addEventListener('mouseout', (e) => {
+            if (e.target.tagName === 'A') {
+              clearTimeout(hoverTimeout);
             }
           });
 
