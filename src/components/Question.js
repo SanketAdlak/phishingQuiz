@@ -29,8 +29,10 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
   const handlePhishingLinkClick = (e) => {
     e.preventDefault();
     clickedPhishingRef.current = true;
-    if (question.isPhishing) {
-      toast.warn('This is a suspicious URL. You should not click on unverified URLs.');
+    if (question.scenario.isPhishing) {
+      toast.warn(question.scenario.toastMessage);
+    } else {
+      toast.success(question.scenario.toastMessage);
     }
   };
 
