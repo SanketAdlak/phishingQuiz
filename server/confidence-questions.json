@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "question": "I am more skilled at identifying online scams than the average IIIT student."
+  },
+  {
+    "id": 2,
+    "question": "My technical background makes me less likely to fall for a sophisticated phishing attempt."
+  },
+  {
+    "id": 3,
+    "question": "I am confident I can spot a fraudulent email or website in under 10 seconds."
+  },
+  {
+    "id": 4,
+    "question": "I always know how to verify the sender of a suspicious email."
+  },
+  {
+    "id": 5,
+    "question": "I can easily tell the difference between a real university announcement and a fake one."
+  },
+  {
+    "id": 6,
+    "question": "Security warnings on browsers or email clients are mostly for non-technical users."
+  },
+  {
+    "id": 7,
+    "question": "I am confident in my ability to detect a 'homoglyph' attack (e.g., using different alphabets) in a URL."
+  },
+  {
+    "id": 8,
+    "question": "I believe my online accounts are well-secured and I am at low risk of being compromised."
+  },
+  {
+    "id": 9,
+    "question": "I can easily tell when a message is using psychological tricks (like urgency) to make me click."
+  },
+  {
+    "id": 10,
+    "question": "I have a very good understanding of online security best practices."
+  }
+]

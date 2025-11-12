@@ -1,85 +1,182 @@
 [
-  {
-    "id": 1,
-    "description": "You receive an email with a link to reset your password. It looks legitimate. What do you do?",
-    "scenario": {
-      "html": "<div class='iphone-chat-embed'>\n <style>\n .iphone-chat-embed {\n font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, \n 'Helvetica Neue', Arial, sans-serif;\n background-color: #f0f2f5;\n padding: 20px;\n box-sizing: border-box;\n }\n\n .iphone-chat-embed .chat-container {\n width: 100%;\n max-width: 450px; \n min-height: 600px;\n border: 1px solid #dcdcdc;\n background-color: #ffffff;\n border-radius: 12px;\n box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);\n display: flex;\n flex-direction: column; \n padding: 15px;\n box-sizing: border-box; \n margin: 0 auto; \n }\n\n .iphone-chat-embed .message {\n max-width: 75%; \n padding: 12px 18px;\n margin-bottom: 10px;\n border-radius: 20px; \n line-height: 1.4;\n word-wrap: break-word; \n }\n \n .iphone-chat-embed .message p {\n margin: 0; \n }\n\n .iphone-chat-embed .message.received {\n background-color: #e5e5ea; \n color: #000000;\n align-self: flex-start; \n }\n\n .iphone-chat-embed .message.sent {\n background-color: #007aff; \n color: #ffffff;\n align-self: flex-end; \n }\n </style>\n\n <div class='chat-container'>\n \n <div class='message received'>\n <p>Hey, are you free later tonight?</p>\n </div>\n\n \n <div class='message sent'>\n <p>Hey! Yeah, I should be. What\\'s up?</p>\n </div>\n\n \n <div class='message received'>\n <p>Just wondering if you wanted to grab dinner.</p>\n </div>\n\n \n <div class='message sent'>\n <p>Sounds great! 7 PM?</p>\n </div>\n \n \n <div class='message received'>\n <p>Perfect. Let\\'s meet at that new place downtown. The one we talked about last week.</p>\n </div>\n </div>\n</div>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  },
-  {
-    "id": 2,
-    "description": "You get an email from your bank asking you to verify your account details. What do you do?",
-    "scenario": {
-      "html": "<p>Please verify your account details by clicking here: <a href='http://your-bank.com/verify'>Verify Account</a></p>",
-      "isPhishing": true,
-      "toastMessage": "This is a suspicious URL. You should not click on unverified URLs."
-    }
-  },
-  {
-    "id": 3,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }, {
-    "id": 4,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }, {
-    "id": 5,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }, {
-    "id": 6,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }, {
-    "id": 7,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }, {
-    "id": 8,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }, {
-    "id": 9,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }, {
-    "id": 10,
-    "description": "You receive an email from a known contact with a link to a shared document. What do you do?",
-    "scenario": {
-      "html": "<p>Here's the document we discussed: <a href='https://docs.google.com/document/d/12345'>Document</a></p>",
-      "isPhishing": false,
-      "toastMessage": "This link is safe."
-    }
-  }
+{
+"id": 1,
+"description": "(Fraud) An email with the subject \"Your Moodle grades have been updated.\" The sender is moodle.iiit.ac.in, and the body looks like a real Moodle notification. The \"View Grades\" button links to iiit.moodle-access.org.",
+"scenario": {
+    "html": "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Email Viewer Prototype</title><script src='https://cdn.tailwindcss.com'></script><link href='https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap' rel='stylesheet'><style> body { font-family: 'Inter', sans-serif; } </style></head><body class='bg-gray-100'><div class='bg-white border-b shadow-sm px-4 py-2 flex items-center gap-3'><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Ignore</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Block</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Delete</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Archive</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Report</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Reply</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Reply All</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Forward</button><div class='flex-grow'></div><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Zoom</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Move</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Rules</button><button class='px-3 py-1 bg-gray-100 rounded hover:bg-gray-200'>Categorize</button></div><div class='px-6 py-4 bg-white border-b mt-2'><h1 class='text-xl font-semibold'>M25CSC6.302: Shell Lab - 13th November</h1></div><div class='bg-white mx-6 mt-2 shadow rounded-md border'><div class='p-6'><div class='flex items-center gap-3 mb-4'><div class='bg-red-400 h-10 w-10 rounded-full flex items-center justify-center text-white font-semibold text-lg'> CD </div><div><div class='font-semibold'>Chirag Dhamija (via Moodle)</div><div class='text-sm text-gray-500'>To: Adlak Sanket Vijay</div></div></div><div class='text-blue-600 text-sm mb-4 space-x-2'><a href='#' class='hover:underline'>M25CSC6.302</a> » <a href='#' class='hover:underline'>Forums</a> » <a href='#' class='hover:underline'>Announcements</a> » <a href='#' class='hover:underline'>Shell Lab - 13th November</a></div><p class='text-gray-700 mb-6'><strong>Shell Lab - 13th November</strong><br> by <span class='text-blue-600 hover:underline cursor-pointer'>Chirag Dhamija</span> - Wednesday, 12 November 2025, 6:19 PM </p><div class='text-gray-800 leading-relaxed space-y-4'><p>Hi Everyone!</p><p> This is to inform you that we will be having a session on <strong>SHELL</strong> tomorrow from <strong>2:00 PM to 3:00 PM</strong>. Kindly make sure to be on time. </p><p>Regards<br>SSD TAs</p></div><div class='mt-6 space-y-1 text-sm'><a href='#' class='text-blue-600 hover:underline'>Reply</a><br><a href='#' class='text-blue-600 hover:underline'>See this post in context</a></div><p class='text-xs text-gray-500 mt-8'> You can reply to this via email. </p></div><div class='border-t p-4 flex gap-3 bg-gray-50'><button class='px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700'>Reply</button><button class='px-4 py-2 bg-gray-200 rounded hover:bg-gray-300'>Forward</button></div></div></body></html>",
+"isPhishing": true,
+"toastMessage": "Phishing: link domain does not match the official Moodle domain. Do not click."
+}
+},
+{
+"id": 2,
+"description": "(Safe) A legitimate automated email from Microsoft: \"New sign-in to your IIIT.ac.in account. A new sign-in from Firefox on Linux, [Location, e.g., Hyderabad] was detected.\" The \"Review Activity\" button links to the real account.microsoft.com domain.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:600px;border:1px solid #ddd;padding:16px;border-radius:8px;'><h3>Security alert</h3><p>From: <strong>[account-security@microsoft.com](mailto:account-security@microsoft.com)</strong></p><p>New sign-in to your IIIT.ac.in account. A new sign-in from Firefox on Linux, Hyderabad was detected.</p><p style='text-align:center;margin:20px 0;'><a href='https://account.microsoft.com' style='display:inline-block;padding:10px 16px;border-radius:6px;border:1px solid #2d6cdf;text-decoration:none;'>Review Activity</a></p><p>If this was you, no action is required.</p></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: links go to account.microsoft.com."
+}
+},
+{
+"id": 3,
+"description": "(Fraud) A plain-text email from [prof.arun.kumar@gmail.com](mailto:prof.arun.kumar@gmail.com) (a non-IIIT address): \"Hi team, I'm at a conference and can't access my files. I've uploaded the solution set for Algo-II to my personal drive, link here: bit.ly/Algo-Solutions\"",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:600px;border:1px solid #eee;padding:12px;border-radius:6px;'><pre style='white-space:pre-wrap;font-family:inherit;'>From: [prof.arun.kumar@gmail.com](mailto:prof.arun.kumar@gmail.com)\nSubject: Solutions for Algo-II\n\nHi team,\n\nI'm at a conference and can't access my files. I've uploaded the solution set for Algo-II to my personal drive, link here: bit.ly/Algo-Solutions\n\nRegards,\nArun</pre></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: unexpected personal email + shortened link. Verify sender before clicking."
+}
+},
+{
+"id": 4,
+"description": "(Fraud) An email that looks like a GitHub alert. Subject: \"A security vulnerability was found in your 'Project-Pluto' repository.\" The \"View Pull Request\" button's link text says github.com/YourUser/Project-Pluto/pulls/5, but the href (what you'd see on hover) is github.auth-user.net.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:650px;border:1px solid #ddd;padding:16px;border-radius:8px;'><h3>A security vulnerability was found in your 'Project-Pluto' repository</h3><p>From: <strong>[alerts@github.com](mailto:alerts@github.com)</strong></p><p>Repository: <em>YourUser/Project-Pluto</em></p><p style='text-align:center;margin:20px 0;'><a href='http://github.auth-user.net/redirect' title='Actual href: github.auth-user.net' style='display:inline-block;padding:10px 16px;border-radius:6px;border:1px solid #333;text-decoration:none;'>View Pull Request (github.com/YourUser/Project-Pluto/pulls/5)</a></p><p>-- GitHub Security Alerts</p></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: visible link text differs from actual href (possible spoofing)."
+}
+},
+{
+"id": 5,
+"description": "(Safe) A real, automated email from Piazza (a 3rd-party site). Subject: \"A new note was posted in 'CS-101'.\" The sender is [no-reply@piazza.com](mailto:no-reply@piazza.com), and all links go to the real piazza.com domain.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:600px;border:1px solid #eee;padding:14px;border-radius:8px;'><h3>A new note was posted in 'CS-101'</h3><p>From: <strong>[no-reply@piazza.com](mailto:no-reply@piazza.com)</strong></p><p>There is a new note in the CS-101 class. <a href='https://piazza.com/class/cs101/notes/123'>View the note on Piazza</a>.</p></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: sender and links point to piazza.com."
+}
+},
+{
+"id": 6,
+"description": "(Fraud) An email from the \"IIIT Placement Cell.\" Subject: \"Urgent: Action Required for Placement Registration.\" The email uses the official IIIT logo. The sender is [placement-cell@iiit.ac.in](mailto:placement-cell@iiit.ac.in). The \"Login to Portal\" link, however, links to a page that perfectly clones the IIIT SSO login page on iiit.placement-portal.org.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:700px;border:1px solid #ddd;padding:16px;border-radius:8px;'><img src='https://example.com/iiit-logo.png' alt='IIIT Logo' style='height:40px;'><h3>Urgent: Action Required for Placement Registration</h3><p>From: <strong>[placement-cell@iiit.ac.in](mailto:placement-cell@iiit.ac.in)</strong></p><p>Dear student, please complete your placement registration immediately to avoid missing deadlines. Use the portal below to login and finish registration.</p><p style='text-align:center;margin:20px 0;'><a href='http://iiit.placement-portal.org/login' style='display:inline-block;padding:10px 16px;border-radius:6px;border:1px solid #2d6cdf;text-decoration:none;'>Login to Portal</a></p></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: login link goes to a clone domain (placement-portal.org). Don't enter credentials."
+}
+},
+{
+"id": 7,
+"description": "(Safe) A real, but slightly unprofessional, plain-text email from the hostel office [hostel.office@iiit.ac.in](mailto:hostel.office@iiit.ac.in). Subject: \"Hostel Maintenance Schedule.\" The body just has text and a \"View Schedule.pdf\" attachment, which is a real PDF.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:600px;border:1px solid #eee;padding:12px;border-radius:6px;'><pre style='white-space:pre-wrap;font-family:inherit;'>From: [hostel.office@iiit.ac.in](mailto:hostel.office@iiit.ac.in)\nSubject: Hostel Maintenance Schedule\n\nDear Residents,\n\nPlease find attached the maintenance schedule.\n\nAttachment: View Schedule.pdf\n</pre></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: known sender and expected PDF attachment."
+}
+},
+{
+"id": 8,
+"description": "(Fraud) An email with the subject \"Your IIIT Wi-Fi access is expiring.\" The sender is [it-support@iiit.ac.in](mailto:it-support@iiit.ac.in). It warns that due to \"network upgrades,\" you must re-validate your credentials. The link \"Re-validate Now\" has the href 192.168.1.10/portal.php (a local IP, simulating a \"captive portal\" phish).",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:620px;border:1px solid #ddd;padding:16px;border-radius:8px;'><h3>Your IIIT Wi-Fi access is expiring</h3><p>From: <strong>[it-support@iiit.ac.in](mailto:it-support@iiit.ac.in)</strong></p><p>Due to network upgrades you must re-validate your credentials to keep access. Click below:</p><p style='text-align:center;margin:18px 0;'><a href='http://192.168.1.10/portal.php' style='display:inline-block;padding:10px 16px;border-radius:6px;border:1px solid #333;text-decoration:none;'>Re-validate Now</a></p><p>-- IIIT IT Support</p></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: link points to a suspicious local IP (possible captive-portal phish)."
+}
+},
+{
+"id": 9,
+"description": "(Safe) A real text message (SMS) from HDFC Bank: \"A charge of Rs. 350.00 at 'Amazon Svcs' was made on your card ending 1234. If this was not you, call 1800-xxxx-xxxx.\" This is a legitimate, common alert.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:420px;border:1px solid #eee;padding:12px;border-radius:6px;'><p><strong>HDFC Bank</strong></p><p>A charge of Rs. 350.00 at 'Amazon Svcs' was made on your card ending 1234. If this was not you, call 1800-xxxx-xxxx.</p></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: standard bank SMS alert. Call the listed bank number if you didn't authorize the charge."
+}
+},
+{
+"id": 10,
+"description": "(Safe) A real calendar invite (.ics file) from a known professor's iiit.ac.in email for an \"Optional Doubt-Clearing Session\" for an upcoming exam.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:640px;border:1px solid #eee;padding:14px;border-radius:6px;'><p>From: <strong>[prof.jaya@iiit.ac.in](mailto:prof.jaya@iiit.ac.in)</strong></p><p>Subject: Optional Doubt-Clearing Session</p><p>Attached: session.ics (Calendar invite)</p><p>Event: Optional Doubt-Clearing Session for Exam</p></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: known professor and .ics invite from official address."
+}
+},
+{
+"id": 11,
+"description": "11. (Fraud) [Matched to Q1] Stimulus: An email. Subject: \"Your IIIT Account is scheduled for deletion.\" Sender: [it-admin@iiit.ac.in](mailto:it-admin@iiit.ac.in). Body: \"Your account is over its storage quota. Log in to verify and prevent deletion.\" Link: iiit.verify-quota.com. Nudge: Before the \"Safe/Unsafe\" buttons appear, a 5-second forced delay modal pops up: STOP. Think for 5 seconds.This message creates a strong sense of urgency. Scammers use urgency to make you act without thinking.(After 5s, the buttons appear)",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:700px;border:1px solid #ddd;padding:16px;border-radius:8px;'><div style='background:#fff3cd;border-left:4px solid #ffd54d;padding:10px;margin-bottom:12px;'>STOP. Think for 5 seconds. This message creates a strong sense of urgency. Scammers use urgency to make you act without thinking.</div><h3>Your IIIT Account is scheduled for deletion</h3><p>From: <strong>[it-admin@iiit.ac.in](mailto:it-admin@iiit.ac.in)</strong></p><p>Your account is over its storage quota. Log in to verify and prevent deletion.</p><p style='text-align:center;margin:18px 0;'><a href='http://iiit.verify-quota.com' style='display:inline-block;padding:10px 16px;border-radius:6px;border:1px solid #c0392b;text-decoration:none;'>Verify Now</a></p></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: urgent deletion threat + non-IIIT domain (verify via official channels)."
+}
+},
+{
+"id": 12,
+"description": "12. (Safe) [Matched to Q2] Stimulus: A legitimate email from Google. Subject: \"Security alert: Your password was changed.\" All links point to myaccount.google.com. Nudge: A static yellow hint box is added below the email: 💡 Hint: Did you just change this password? If so, this alert is expected. If not, it's a real alert that you should act on. Either way, the email itself is legitimate.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:680px;border:1px solid #eee;padding:14px;border-radius:8px;'><h3>Security alert: Your password was changed</h3><p>From: <strong>[security-notice@google.com](mailto:security-notice@google.com)</strong></p><p>All links point to: <a href='https://myaccount.google.com'>myaccount.google.com</a></p><div style='background:#fffbe6;border-left:4px solid #ffd54d;padding:10px;margin-top:12px;'>💡 Hint: Did you just change this password? If so, this alert is expected. If not, it's a real alert that you should act on. Either way, the email itself is legitimate.</div></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: links to myaccount.google.com. Confirm if you performed the change."
+}
+},
+{
+"id": 13,
+"description": "13. (Fraud) [Matched to Q3] Stimulus: An email from a (fake) classmate's iiit.ac.in account. Subject: \"Re: Our Project.\" Body: \"Hey, I finished my part. It's on my Google Drive, here: drive.google.com/file/d/....\" The link requires you to \"Grant Access\" to a shady 3rd-party app. Nudge: A static hint box is added below the email: 💡 Hint: This link goes to a real Google page, but it's asking you to grant permissions to an unknown app. Does this app need access to your entire Google account?",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:700px;border:1px solid #eee;padding:14px;border-radius:8px;'><h3>Re: Our Project</h3><p>From: <strong>[classmate@iiit.ac.in](mailto:classmate@iiit.ac.in)</strong></p><p>Hey, I finished my part. It's on my Google Drive, here: <a href='https://drive.google.com/file/d/FAKEID'>drive.google.com/file/d/FAKEID</a></p><div style='background:#f0f6ff;border-left:4px solid #6ea8fe;padding:10px;margin-top:12px;'>💡 Hint: This link goes to a real Google page, but it's asking you to grant permissions to an unknown app. Does this app need access to your entire Google account?</div></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: permission-grant flow for unknown app. Do not grant permissions."
+}
+},
+{
+"id": 14,
+"description": "14. (Fraud) [Matched to Q4] Stimulus: An email that looks like an alert from Slack. Subject: \"You have 3 new DMs from [Professor's Name].\" Button \"View Messages\" links to slack-iiit.web.app. Nudge: A static red warning box is added below the email: ⚠️ Warning: Check the Domain.Legitimate services (like Slack) will not use a .web.app or .net domain for their main login page. Always check the browser's address bar.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:700px;border:1px solid #ddd;padding:14px;border-radius:8px;'><h3>You have 3 new DMs from Prof. Rao</h3><p>From: <strong>[noreply@slack.com](mailto:noreply@slack.com)</strong></p><p style='text-align:center;margin:18px 0;'><a href='https://slack-iiit.web.app/messages' style='display:inline-block;padding:10px 16px;border-radius:6px;border:1px solid #333;text-decoration:none;'>View Messages</a></p><div style='background:#ffe6e6;border-left:4px solid #ff6b6b;padding:10px;margin-top:12px;'>⚠️ Warning: Check the Domain. Legitimate services (like Slack) will not use a .web.app domain for their main login page. Always check the browser's address bar.</div></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: suspicious domain (.web.app) used for login-like action."
+}
+},
+{
+"id": 15,
+"description": "15. (Safe) [Matched to Q5] Stimulus: A real, automated email from a job portal (like Handshake or Internshala) that IIIT actually uses. Subject: \"Arcesium has invited you to apply for an 'SDE Intern' role.\" All links go to the real internshala.com domain. Nudge: A static hint box is added below the email: 💡 Hint: This is an unsolicited email from a 3rd-party service. Is this a service you signed up for? Even if it's real, is it \"safe\"? (Yes, a real marketing email is \"safe\".)",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:700px;border:1px solid #eee;padding:14px;border-radius:8px;'><h3>Arcesium has invited you to apply for an 'SDE Intern' role</h3><p>From: <strong>[noreply@internshala.com](mailto:noreply@internshala.com)</strong></p><p>Click to view the job posting: <a href='https://www.internshala.com/jobs/12345'>View on Internshala</a></p><div style='background:#f0f6ff;border-left:4px solid #6ea8fe;padding:10px;margin-top:12px;'>💡 Hint: This is an unsolicited email from a 3rd-party service. Is this a service you signed up for? Even if it's real, is it \"safe\"? (Yes, a real marketing email is \"safe\".)</div></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: links point to the official job portal domain."
+}
+},
+{
+"id": 16,
+"description": "16. (Fraud) [Matched to Q6] Stimulus: An email from \"IIIT PΙacement Cell.\" Subject: \"Confirmation: Your Interview with DE Shaw.\" Body: \"Please confirm your interview slot by logging in.\" The sender looks like [placement.cell@iiit.ac.in](mailto:placement.cell@iiit.ac.in), but the 'I' in 'IIIT' is a Cyrillic 'Ι' (a homoglyph). Nudge: A (simulated) browser tooltip appears when the user (theoretically) hovers over the sender's name: Warning: This domain contains unusual characters. iiit.ac.in may not be iiit.ac.in.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:720px;border:1px solid #ddd;padding:14px;border-radius:8px;'><h3>Confirmation: Your Interview with DE Shaw</h3><p>From: <strong>[placement.cell@iiit.ac.in](mailto:placement.cell@iiit.ac.in)</strong> <small style='color:#666'>(display text may use Cyrillic homoglyph)</small></p><p>Please confirm your interview slot by logging in: <a href='https://iiit-login.example/confirm'>Confirm Interview</a></p><div style='background:#ffe6e6;border-left:4px solid #ff6b6b;padding:10px;margin-top:12px;'>Tooltip (simulated): Warning: This domain contains unusual characters. iiit.ac.in may not be iiit.ac.in.</div></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: homoglyph in sender/display name. Domain may be spoofed."
+}
+},
+{
+"id": 17,
+"description": "17. (Safe) [Matched to Q7] Stimulus: A real, automated email from [no-reply@turnitin.com](mailto:no-reply@turnitin.com). Subject: \"Digital Receipt for your 'AI-101' submission.\" It's just a confirmation, but it's unsolicited and contains links. Nudge: Before the \"Safe/Unsafe\" buttons appear, a 5-second forced delay modal pops up: STOP. Think for 5 seconds. This email is just a notification. It's not asking you to log in or do anything urgent. Does it look like a real receipt?",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:680px;border:1px solid #eee;padding:14px;border-radius:8px;'><div style='background:#fff3cd;border-left:4px solid #ffd54d;padding:10px;margin-bottom:12px;'>STOP. Think for 5 seconds. This email is just a notification. It's not asking you to log in or do anything urgent. Does it look like a real receipt?</div><h3>Digital Receipt for your 'AI-101' submission</h3><p>From: <strong>[no-reply@turnitin.com](mailto:no-reply@turnitin.com)</strong></p><p>Thank you for your submission. View receipt: <a href='https://www.turnitin.com/submission/receipt/FAKEID'>View Receipt</a></p></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: notification-only email; no login requested. Pause before acting on urgent prompts."
+}
+},
+{
+"id": 18,
+"description": "18. (Fraud) [Matched to Q8] Stimulus: A poster (as an image in an email) for a \"Student Hackathon\" with a QR code. \"Scan to Register!\" The QR code links to a malicious site. Nudge: A static red warning box is added below the email: ⚠️ Warning: QR Code.A QR code is a hidden link. You cannot check its destination before scanning. Treat QR codes in emails with extreme suspicion.",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:700px;border:1px solid #ddd;padding:14px;border-radius:8px;'><h3>Student Hackathon - Scan to Register!</h3><p>From: <strong>[events@studentsclub.iiit.ac.in](mailto:events@studentsclub.iiit.ac.in)</strong></p><div style='text-align:center;margin:12px 0;'><img src='https://example.com/qr-code.png' alt='QR code to register' style='width:240px;height:240px;border:1px solid #ccc;'></div><div style='background:#ffe6e6;border-left:4px solid #ff6b6b;padding:10px;margin-top:12px;'>⚠️ Warning: QR Code. A QR code is a hidden link. You cannot check its destination before scanning. Treat QR codes in emails with extreme suspicion.</div></div>",
+"isPhishing": true,
+"toastMessage": "Phishing: QR code links to unknown/malicious site. Do not scan."
+}
+},
+{
+"id": 19,
+"description": "19. (Safe) [Matched to Q9] Stimulus: A real text message (SMS) from Amazon: \"Your package with [Item] is out for delivery. Track here: a.co/d/....\" The link is a real Amazon shortened link. Nudge: A static hint box is added below the SMS: 💡 Hint: Link shorteners (bit.ly, a.co) can be dangerous, but many legitimate companies use them for SMS. Does this text match a real order you're expecting?",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:420px;border:1px solid #eee;padding:12px;border-radius:6px;'><p><strong>Amazon</strong></p><p>Your package with [Item] is out for delivery. Track here: <a href='https://a.co/d/FAKEID'>a.co/d/FAKEID</a></p><div style='background:#f0f6ff;border-left:4px solid #6ea8fe;padding:10px;margin-top:12px;'>💡 Hint: Link shorteners (bit.ly, a.co) can be dangerous, but many legitimate companies use them for SMS. Does this text match a real order you're expecting?</div></div>",
+"isPhishing": false,
+"toastMessage": "Likely legitimate: official Amazon short link. Verify against your orders if unsure."
+}
+},
+{
+"id": 20,
+"description": "20. (Safe) [Matched to Q10] Stimulus: A real .ics calendar invite from an external (but known) speaker from a major tech company for a \"Tech Talk at IIIT.\" The sender is [speaker@company.com](mailto:speaker@company.com). Nudge: A static hint box is added below the email: 💡 Hint: This sender is external to IIIT.ac.in. Does that automatically make it unsafe? Has this event been announced on other (official) IIIT channels?",
+"scenario": {
+"html": "<div style='font-family:Arial,sans-serif;max-width:700px;border:1px solid #eee;padding:14px;border-radius:8px;'><h3>Tech Talk at IIIT</h3><p>From: <strong>[speaker@company.com](mailto:speaker@company.com)</strong></p><p>Attached: talk.ics (Calendar invite)</p><div style='background:#f0f6ff;border-left:4px solid #6ea8fe;padding:10px;margin-top:12px;'>💡 Hint: This sender is external to IIIT.ac.in. Does that automatically make it unsafe? Has this event been announced on other (official) IIIT channels?</div></div>",
+"isPhishing": false,
+"toastMessage": "Legitimate: known external speaker. Cross-check event on official channels if unsure."
+}
+}
 ]
