@@ -9,54 +9,38 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 const port = 3001;
 
-// Environment variables for configuration
-const API_KEY = process.env.API_KEY || 'your-default-api-key';
-const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGIN || 'http://localhost:3000';
+// Rate limiting to prevent abuse; removing as university address might have many users with same IP
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 100, // limit each IP to 100 requests per windowMs
+//   standardHeaders: true,
+//   legacyHeaders: false,
+// });
 
-// Rate limiting to prevent abuse
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+// app.use(limiter);
 
-// CORS configuration
-const corsOptions = {
-  origin: ALLOWED_ORIGIN,
-};
-
-app.use(limiter);
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(bodyParser.json());
 
 const resultsFilePath = path.join(__dirname, 'results.json');
 const csvFilePath = path.join(__dirname, 'results.csv');
 
-// // Middleware for API key authentication
-// const apiKeyAuth = (req, res, next) => {
-//   const apiKey = req.get('X-API-KEY');
-//   if (!apiKey || apiKey !== 'your-default-api-key') {
-//     return res.status(401).send('Unauthorized');
-//   }
-//   next();
-// };
-
 const answers = require('./answers.json');
+const confidenceQuestions = require('./confidence-questions.json');
+const questions = require('./questions.json');
 
 // Validation rules for the submission
 const submissionValidationRules = [
   body().isArray(),
   body('*.questionId').isInt(),
-  body('*.answer').isString(),
-  body('*.timeTaken').isFloat(),
-  body('*.clickedPhishingLink').isBoolean(),
-  body('*.urlViewed').isBoolean(),
+  body('*.answer').not().isEmpty(),
+  body('*.timeTaken').isFloat().optional(),
+  body('*.clickedPhishingLink').isBoolean().optional(),
+  body('*.urlViewed').isBoolean().optional(),
 ];
 
 app.post(
   '/api/submit',
-  // apiKeyAuth,
   submissionValidationRules,
   (req, res) => {
     const errors = validationResult(req);
@@ -77,19 +61,26 @@ app.post(
 
     newResults.forEach((result) => {
       const questionId = result.questionId;
-      const isCorrect = answers[questionId] === result.answer;
-      const questionHeaderId = `Q${questionId}`;
+      
+      if (result.type === 'confidence') {
+        const questionHeaderId = `ConfidenceQ${questionId}`;
+        csvHeader.push(questionHeaderId);
+        rowData[questionHeaderId] = result.answer;
+      } else {
+        const isCorrect = answers[questionId] === result.answer;
+        const questionHeaderId = `Q${questionId}`;
 
-      const answerHeader = `Answer${questionHeaderId}`;
-      const timeTakenHeader = `timeTaken${questionHeaderId}`;
-      const phishingClickHeader = `ClickOnPhishingContent${questionHeaderId}`;
-      const urlViewedHeader = `urlViewed${questionHeaderId}`;
+        const answerHeader = `Answer${questionHeaderId}`;
+        const timeTakenHeader = `timeTaken${questionHeaderId}`;
+        const phishingClickHeader = `ClickOnPhishingContent${questionHeaderId}`;
+        const urlViewedHeader = `urlViewed${questionHeaderId}`;
 
-      csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader, urlViewedHeader);
-      rowData[answerHeader] = isCorrect ? 'correct' : 'incorrect';
-      rowData[timeTakenHeader] = result.timeTaken;
-      rowData[phishingClickHeader] = result.clickedPhishingLink;
-      rowData[urlViewedHeader] = result.urlViewed;
+        csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader, urlViewedHeader);
+        rowData[answerHeader] = isCorrect ? 'correct' : 'incorrect';
+        rowData[timeTakenHeader] = result.timeTaken;
+        rowData[phishingClickHeader] = result.clickedPhishingLink;
+        rowData[urlViewedHeader] = result.urlViewed;
+      }
     });
 
     const csvRow = csvHeader.map(header => rowData[header]).join(',');
@@ -141,7 +132,20 @@ app.post(
   }
 );
 
-const questions = require('./questions.json');
+app.get('/api/confidence-questions/count', (req, res) => {
+  res.json({ totalQuestions: confidenceQuestions.length });
+});
+
+app.get('/api/confidence-question/:id', (req, res) => {
+  const questionId = parseInt(req.params.id, 10);
+  const question = confidenceQuestions.find((q) => q.id === questionId);
+
+  if (!question) {
+    return res.status(404).send('Question not found');
+  }
+
+  res.json(question);
+});
 
 app.get('/api/questions/count', (req, res) => {
   res.json({ totalQuestions: questions.length });
@@ -156,15 +160,6 @@ app.get('/api/question/:id', (req, res) => {
   }
 
   res.json(question);
-});
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../build')));
-
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 
 app.listen(port, () => {
