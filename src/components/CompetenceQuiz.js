@@ -67,7 +67,6 @@ const CompetenceQuiz = ({ onComplete, confidenceResults }) => {
 
   return (
     <div className="quiz">
-      <h1>Competence Test</h1>
       <SwitchTransition>
         <CSSTransition
           key={currentQuestionIndex}

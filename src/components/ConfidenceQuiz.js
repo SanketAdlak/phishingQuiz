@@ -37,7 +37,6 @@ const ConfidenceQuiz = ({ onComplete }) => {
 
   return (
     <div className="quiz">
-      <h1>Confidence Test</h1>
       <SwitchTransition>
         <CSSTransition
           key={currentQuestionIndex}
