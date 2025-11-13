@@ -12,7 +12,7 @@ const CompetenceQuiz = ({ onComplete, confidenceResults }) => {
   const questionRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/questions/count')
+    fetch('/api/questions/count')
       .then((res) => res.json())
       .then((data) => setTotalQuestions(data.totalQuestions));
   }, []);
@@ -21,7 +21,7 @@ const CompetenceQuiz = ({ onComplete, confidenceResults }) => {
     if (currentQuestionIndex > totalQuestions && totalQuestions > 0) {
       return;
     }
-    fetch(`http://localhost:3001/api/question/${currentQuestionIndex}`)
+    fetch(`api/question/${currentQuestionIndex}`)
       .then((res) => res.json())
       .then((data) => setQuestion(data));
   }, [currentQuestionIndex, totalQuestions]);
@@ -41,7 +41,7 @@ const CompetenceQuiz = ({ onComplete, confidenceResults }) => {
     if (results.length > 0 && results.length === totalQuestions && !isSubmittingRef.current) {
       isSubmittingRef.current = true;
       const allResults = [...confidenceResults, ...results];
-      fetch('http://localhost:3001/api/submit', {
+      fetch('api/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

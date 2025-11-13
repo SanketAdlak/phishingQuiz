@@ -11,7 +11,7 @@ const ConfidenceQuiz = ({ onComplete }) => {
   const questionRef = useRef(null);
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/confidence-questions/count')
+    fetch('api/confidence-questions/count')
       .then((res) => res.json())
       .then((data) => setTotalQuestions(data.totalQuestions));
   }, []);
@@ -21,7 +21,7 @@ const ConfidenceQuiz = ({ onComplete }) => {
       onComplete(results);
       return;
     }
-    fetch(`http://localhost:3001/api/confidence-question/${currentQuestionIndex}`)
+    fetch(`api/confidence-question/${currentQuestionIndex}`)
       .then((res) => res.json())
       .then((data) => setQuestion(data));
   }, [currentQuestionIndex, totalQuestions, onComplete, results]);
