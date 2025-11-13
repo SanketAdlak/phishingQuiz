@@ -125,7 +125,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
         ref={scenarioRef}
         title="scenario-content"
         srcDoc={question.scenario.html}
-        style={{ width: '80%', border: 'none', overflow: 'hidden' }} // Removed fixed height, added overflow hidden
+        style={{ width: '80%', minHeight: '70vh', border: 'none', overflow: 'hidden' }} // Removed fixed height, added overflow hidden
       />
       <div className="answers">
         <button className="legitimate-btn" onClick={() => handleAnswer('legitimate')}>Legit</button>
