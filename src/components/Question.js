@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
 
 const Question = forwardRef(({ question, onAnswer }, ref) => {
@@ -8,7 +8,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
   const scenarioRef = useRef(null);
 
   // Function to handle messages from the iframe
-  const handleIframeMessage = (event) => {
+  const handleIframeMessage = useCallback((event) => {
     // Ensure the message is from the expected iframe (optional, but good practice)
     // For srcdoc, origin will be the parent's origin.
     if (event.source === scenarioRef.current.contentWindow) {
@@ -23,7 +23,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
         }
       }
     }
-  };
+  }, []);
 
   useEffect(() => {
     setStartTime(Date.now());
@@ -86,7 +86,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
         iframe.onload = null; // Remove iframe load listener
       }
     };
-  }, [question]); // Re-run effect when question changes
+  }, [question, handleIframeMessage]); // Re-run effect when question changes
 
   const handlePhishingLinkClick = (e) => {
     // e.preventDefault(); // Already prevented in iframe script
