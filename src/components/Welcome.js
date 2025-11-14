@@ -4,9 +4,9 @@ const Welcome = ({ onStart }) => {
   return (
     <div className="welcome-container">
       <div className="welcome-content">
-        <h1 className="welcome-title">Phishing Awareness Quiz</h1>
+        <h1 className="welcome-title">Digital Safety Study</h1>
         <p className="welcome-subtitle">
-          Test your ability to spot phishing attacks.
+          This 10-minute 3-part study is a component of a behavioural economics course project. All scenarios are simulated and for educational purposes only. Your responses are completely anonymous!
         </p>
         <p className="welcome-description">
           This quiz is for educational purposes only and is part of a behavioral
