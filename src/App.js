@@ -5,11 +5,13 @@ import Welcome from './components/Welcome';
 import ThankYou from './components/ThankYou';
 import ConfidenceQuiz from './components/ConfidenceQuiz';
 import CompetenceQuiz from './components/CompetenceQuiz';
+import Demographics from './components/Demographics';
 import './App.css';
 
 function App() {
   const [view, setView] = useState('welcome');
   const [confidenceResults, setConfidenceResults] = useState([]);
+  const [competenceResults, setCompetenceResults] = useState([]);
 
   useEffect(() => {
     const quizCompleted = localStorage.getItem('quizCompleted');
@@ -27,9 +29,36 @@ function App() {
     setView('competence');
   };
 
-  const handleQuizComplete = () => {
-    localStorage.setItem('quizCompleted', 'true');
-    setView('thankyou');
+  const handleCompetenceComplete = (results) => {
+    setCompetenceResults(results);
+    setView('demographics');
+  };
+
+  const handleDemographicsSubmit = (demographics) => {
+    const allResults = {
+      quizResults: [...confidenceResults, ...competenceResults],
+      demographics,
+    };
+
+    fetch('api/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(allResults),
+    })
+      .then((response) => {
+        if (response.ok) {
+          localStorage.setItem('quizCompleted', 'true');
+          setView('thankyou');
+        } else {
+          // Handle error
+          console.error('Failed to submit results');
+        }
+      })
+      .catch((error) => {
+        console.error('Error submitting results:', error);
+      });
   };
 
   return (
@@ -41,7 +70,8 @@ function App() {
       />
       {view === 'welcome' && <Welcome onStart={handleStart} />}
       {view === 'confidence' && <ConfidenceQuiz onComplete={handleConfidenceComplete} />}
-      {view === 'competence' && <CompetenceQuiz confidenceResults={confidenceResults} onComplete={handleQuizComplete} />}
+      {view === 'competence' && <CompetenceQuiz onComplete={handleCompetenceComplete} />}
+      {view === 'demographics' && <Demographics onDemographicsSubmit={handleDemographicsSubmit} />}
       {view === 'thankyou' && <ThankYou />}
     </div>
   );

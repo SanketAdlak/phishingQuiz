@@ -31,12 +31,16 @@ const questions = require('./questions.json');
 
 // Validation rules for the submission
 const submissionValidationRules = [
-  body().isArray(),
-  body('*.questionId').isInt(),
-  body('*.answer').not().isEmpty(),
-  body('*.timeTaken').isFloat().optional(),
-  body('*.clickedPhishingLink').isBoolean().optional(),
-  body('*.urlViewed').isBoolean().optional(),
+  body('quizResults').isArray(),
+  body('quizResults.*.questionId').isInt(),
+  body('quizResults.*.answer').not().isEmpty(),
+  body('quizResults.*.timeTaken').isFloat().optional(),
+  body('quizResults.*.clickedPhishingLink').isBoolean().optional(),
+  body('quizResults.*.urlViewed').isBoolean().optional(),
+  body('demographics.age').optional().isString(),
+  body('demographics.year').optional().isString(),
+  body('demographics.degree').optional().isString(),
+  body('demographics.course').optional().isString(),
 ];
 
 app.post(
@@ -48,18 +52,22 @@ app.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const newResults = req.body;
+    const { quizResults, demographics } = req.body;
 
     // Atomically append to the CSV file
     const responseId = `response_${Date.now()}`;
     const responseSubmitTime = new Date().toISOString();
-    const csvHeader = ['responseId', 'responseSubmitTime'];
+    const csvHeader = ['responseId', 'responseSubmitTime', 'age', 'year', 'degree', 'course'];
     const rowData = {
       responseId,
       responseSubmitTime,
+      age: demographics.age,
+      year: demographics.year,
+      degree: demographics.degree,
+      course: demographics.course,
     };
 
-    newResults.forEach((result) => {
+    quizResults.forEach((result) => {
       const questionId = result.questionId;
       
       if (result.type === 'confidence') {

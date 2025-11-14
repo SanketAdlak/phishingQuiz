@@ -3,12 +3,11 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import Question from './Question';
 import ProgressBar from './ProgressBar';
 
-const CompetenceQuiz = ({ onComplete, confidenceResults }) => {
+const CompetenceQuiz = ({ onComplete }) => {
   const [question, setQuestion] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [results, setResults] = useState([]);
   const [totalQuestions, setTotalQuestions] = useState(0);
-  const isSubmittingRef = useRef(false);
   const questionRef = useRef(null);
 
   useEffect(() => {
@@ -38,31 +37,17 @@ const CompetenceQuiz = ({ onComplete, confidenceResults }) => {
   };
 
   useEffect(() => {
-    if (results.length > 0 && results.length === totalQuestions && !isSubmittingRef.current) {
-      isSubmittingRef.current = true;
-      const allResults = [...confidenceResults, ...results];
-      fetch('api/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(allResults),
-      })
-        .then((response) => response.text())
-        .then((data) => {
-          console.log(data);
-          onComplete();
-        })
-        .catch((error) => console.error('Error:', error));
+    if (results.length > 0 && results.length === totalQuestions) {
+      onComplete(results);
     }
-  }, [results, totalQuestions, onComplete, confidenceResults]);
+  }, [results, totalQuestions, onComplete]);
 
   if (!question) {
     return <div>Loading...</div>;
   }
 
   if (results.length === totalQuestions) {
-    return <div>Submitting results...</div>;
+    return <div>Loading next section...</div>;
   }
 
   return (
