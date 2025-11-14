@@ -7,7 +7,7 @@ const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 
 const app = express();
-const port = 3001;
+const port = process.env.PORT || 3001;
 
 // Rate limiting to prevent abuse; removing as university address might have many users with same IP
 // const limiter = rateLimit({
@@ -22,12 +22,17 @@ const port = 3001;
 app.use(cors());
 app.use(bodyParser.json());
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'public')));
+
 const resultsFilePath = path.join(__dirname, 'results.json');
 const csvFilePath = path.join(__dirname, 'results.csv');
 
 const answers = require('./answers.json');
 const confidenceQuestions = require('./confidence-questions.json');
 const questions = require('./questions.json');
+const questions1 = require('./Question1.json');
+const questions2 = require('./Question2.json');
 
 // Validation rules for the submission
 const submissionValidationRules = [
@@ -168,6 +173,42 @@ app.get('/api/question/:id', (req, res) => {
   }
 
   res.json(question);
+});
+
+app.get('/api/questions1/count', (req, res) => {
+  res.json({ totalQuestions: questions1.length });
+});
+
+app.get('/api/question1/:id', (req, res) => {
+  const questionId = parseInt(req.params.id, 10);
+  const question = questions1.find((q) => q.id === questionId);
+
+  if (!question) {
+    return res.status(404).send('Question not found');
+  }
+
+  res.json(question);
+});
+
+app.get('/api/questions2/count', (req, res) => {
+  res.json({ totalQuestions: questions2.length });
+});
+
+app.get('/api/question2/:id', (req, res) => {
+  const questionId = parseInt(req.params.id, 10);
+  const question = questions2.find((q) => q.id === questionId);
+
+  if (!question) {
+    return res.status(404).send('Question not found');
+  }
+
+  res.json(question);
+});
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/public/index.html'));
 });
 
 app.listen(port, () => {
