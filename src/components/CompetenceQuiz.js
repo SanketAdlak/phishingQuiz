@@ -3,7 +3,7 @@ import { CSSTransition, SwitchTransition } from 'react-transition-group';
 import Question from './Question';
 import ProgressBar from './ProgressBar';
 
-const CompetenceQuiz = ({ onComplete }) => {
+const CompetenceQuiz = ({ onComplete, part }) => {
   const [question, setQuestion] = useState(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(1);
   const [results, setResults] = useState([]);
@@ -11,19 +11,42 @@ const CompetenceQuiz = ({ onComplete }) => {
   const questionRef = useRef(null);
 
   useEffect(() => {
-    fetch('/api/questions/count')
-      .then((res) => res.json())
-      .then((data) => setTotalQuestions(data.totalQuestions));
-  }, []);
+    fetch(`/api/questions${part}/count`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+      })
+      .then((data) => setTotalQuestions(data.totalQuestions))
+      .catch((error) => console.error('Error fetching question count:', error));
+  }, [part]);
 
   useEffect(() => {
     if (currentQuestionIndex > totalQuestions && totalQuestions > 0) {
       return;
     }
-    fetch(`api/question/${currentQuestionIndex}`)
-      .then((res) => res.json())
-      .then((data) => setQuestion(data));
-  }, [currentQuestionIndex, totalQuestions]);
+    fetch(`/api/question${part}/${currentQuestionIndex}`)
+      .then((res) => {
+        if (!res.ok) {
+          res.text().then(text => {
+            console.error('Error fetching question: Non-OK response', text);
+          });
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          return res.json();
+        } else {
+          res.text().then(text => {
+            console.error('Error fetching question: Not a JSON response', text);
+          });
+          throw new Error("Response was not JSON");
+        }
+      })
+      .then((data) => setQuestion(data))
+      .catch((error) => console.error('Error fetching question:', error));
+  }, [currentQuestionIndex, totalQuestions, part]);
 
   const handleAnswer = (resultData) => {
     const result = {
@@ -37,7 +60,7 @@ const CompetenceQuiz = ({ onComplete }) => {
   };
 
   useEffect(() => {
-    if (results.length > 0 && results.length === totalQuestions) {
+    if (totalQuestions > 0 && results.length === totalQuestions) {
       onComplete(results);
     }
   }, [results, totalQuestions, onComplete]);
@@ -46,12 +69,13 @@ const CompetenceQuiz = ({ onComplete }) => {
     return <div>Loading...</div>;
   }
 
-  if (results.length === totalQuestions) {
+  if (totalQuestions > 0 && results.length === totalQuestions) {
     return <div>Loading next section...</div>;
   }
 
   return (
     <div className="quiz">
+      <h1>Competence Test Part {part}</h1>
       <SwitchTransition>
         <CSSTransition
           key={currentQuestionIndex}
