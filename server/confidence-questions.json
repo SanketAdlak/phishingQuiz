@@ -1,42 +1,42 @@
 [
   {
     "id": 1,
-    "question": "I am more skilled at identifying online scams than the average IIIT student."
+    "text": "How confident are you that you can spot a fraudulent email or website very quickly?"
   },
   {
     "id": 2,
-    "question": "My technical background makes me less likely to fall for a sophisticated phishing attempt."
+    "text": "How confident are you in your ability to identify online scams, compared to the average IIIT student?"
   },
   {
     "id": 3,
-    "question": "I am confident I can spot a fraudulent email or website in under 10 seconds."
+    "text": "How confident are you that your technical background makes you less likely to fall for a sophisticated scam?"
   },
   {
     "id": 4,
-    "question": "I always know how to verify the sender of a suspicious email."
+    "text": "How confident are you in your ability to determine if an email sender is legitimate or fake?"
   },
   {
     "id": 5,
-    "question": "I can easily tell the difference between a real university announcement and a fake one."
+    "text": "How confident are you that you would spot an email trying to steal your account credentials?"
   },
   {
     "id": 6,
-    "question": "Security warnings on browsers or email clients are mostly for non-technical users."
+    "text": "How confident are you in your ability to spot a fake or 'clone' login page?"
   },
   {
     "id": 7,
-    "question": "I am confident in my ability to detect a 'homoglyph' attack (e.g., using different alphabets) in a URL."
+    "text": "How confident are you in your ability to tell the difference between a real university announcement and a fake one?"
   },
   {
     "id": 8,
-    "question": "I believe my online accounts are well-secured and I am at low risk of being compromised."
+    "text": "How confident are you in your ability to distinguish a real security alert from a fake one?"
   },
   {
     "id": 9,
-    "question": "I can easily tell when a message is using psychological tricks (like urgency) to make me click."
+    "text": "How confident are you in your ability to recognize when a message is using psychological tricks (like urgency or fear) to make you click?"
   },
   {
     "id": 10,
-    "question": "I have a very good understanding of online security best practices."
+    "text": "How confident are you in your overall understanding of online security best practices?"
   }
 ]
