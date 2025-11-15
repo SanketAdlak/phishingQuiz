@@ -82,7 +82,6 @@ app.post(
         csvHeader.push(questionHeaderId);
         rowData[questionHeaderId] = result.answer;
       } else {
-        const isCorrect = answers[questionId] === result.answer;
         const questionHeaderId = `Q${questionId}`;
 
         const answerHeader = `Answer${questionHeaderId}`;
@@ -91,7 +90,7 @@ app.post(
         const urlViewedHeader = `urlViewed${questionHeaderId}`;
 
         csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader, urlViewedHeader);
-        rowData[answerHeader] = isCorrect ? 'correct' : 'incorrect';
+        rowData[answerHeader] = result.answer === 'legitimate' ? 'Legit' : 'Fraud';
         rowData[timeTakenHeader] = result.timeTaken;
         rowData[phishingClickHeader] = result.clickedPhishingLink;
         rowData[urlViewedHeader] = result.urlViewed;
