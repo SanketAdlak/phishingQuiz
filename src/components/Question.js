@@ -113,6 +113,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
       urlViewed: urlViewedRef.current,
     });
     toast.success('Response received!');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
