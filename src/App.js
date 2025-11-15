@@ -79,7 +79,7 @@ function App() {
       {view === 'confidenceTitle' && (
         <TitlePage
           title="Part 1: Confidence Quiz"
-          description="This section gauges your confidence in identifying phishing attempts."
+          description="First, we'd like to understand your general views on digital safety. <br> You will see 10 questions. Please rate your confidence on a scale of 1 to 10, where 1 means 'Not at all Confident' and 10 means 'Very Confident'."
           buttonText="Start Part 1"
           onStart={() => setView('confidence')}
         />
@@ -87,8 +87,8 @@ function App() {
       {view === 'confidence' && <ConfidenceQuiz onComplete={handleConfidenceComplete} />}
       {view === 'competence1Title' && (
         <TitlePage
-          title="Part 2: Competence Quiz"
-          description="This section tests your ability to identify phishing attempts."
+          title="Part 2/3: Digital Message Review "
+          description="You will now review 10 simulated digital messages. For each one, please decide if it is Legit or Fraud."
           buttonText="Start Part 2"
           onStart={() => setView('competence1')}
         />
@@ -96,8 +96,8 @@ function App() {
       {view === 'competence1' && <CompetenceQuiz part={1} onComplete={handleCompetence1Complete} />}
       {view === 'competence2Title' && (
         <TitlePage
-          title="Part 3: Competence Quiz"
-          description="This is the final part of the competence quiz."
+          title="Part 3/3: Digital Message Review"
+          description="Great job. You are now on the final part of the exercise. <br> You will see 10 new messages. The task is the same: review each one and decide if it is Legit or Fraud. <br> Some items may include extra information or prompts to help you. Please continue to review each one carefully."
           buttonText="Start Part 3"
           onStart={() => setView('competence2')}
         />
