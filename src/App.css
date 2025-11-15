@@ -277,6 +277,23 @@
   color: #333;
 }
 
+.radio-group-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Adjust gap between options */
+  margin-top: 10px;
+  align-items: center; /* Vertically align items */
+}
+
+.form-check {
+  display: flex; /* Use flex to align radio and label */
+  align-items: center; /* Vertically align radio and label */
+}
+
+.form-check-input {
+  margin-right: 5px; /* Space between radio button and its label */
+}
+
 .form-control {
   width: 100%;
   padding: 12px;

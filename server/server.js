@@ -23,7 +23,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, '../build')));
 
 const resultsFilePath = path.join(__dirname, 'results.json');
 const csvFilePath = path.join(__dirname, 'results.csv');
@@ -43,9 +43,10 @@ const submissionValidationRules = [
   body('quizResults.*.clickedPhishingLink').isBoolean().optional(),
   body('quizResults.*.urlViewed').isBoolean().optional(),
   body('demographics.age').optional().isString(),
-  body('demographics.year').optional().isString(),
+  body('demographics.gender').optional().isString(),
   body('demographics.degree').optional().isString(),
-  body('demographics.course').optional().isString(),
+  body('demographics.cybersecurityTraining').optional().isString(),
+  body('demographics.cyberFraudExposure').optional().isString(),
 ];
 
 app.post(
@@ -62,14 +63,15 @@ app.post(
     // Atomically append to the CSV file
     const responseId = `response_${Date.now()}`;
     const responseSubmitTime = new Date().toISOString();
-    const csvHeader = ['responseId', 'responseSubmitTime', 'age', 'year', 'degree', 'course'];
+    const csvHeader = ['responseId', 'responseSubmitTime', 'age', 'gender', 'degree', 'cybersecurityTraining', 'cyberFraudExposure'];
     const rowData = {
       responseId,
       responseSubmitTime,
       age: demographics.age,
-      year: demographics.year,
+      gender: demographics.gender,
       degree: demographics.degree,
-      course: demographics.course,
+      cybersecurityTraining: demographics.cybersecurityTraining,
+      cyberFraudExposure: demographics.cyberFraudExposure,
     };
 
     quizResults.forEach((result) => {
@@ -207,9 +209,9 @@ app.get('/api/question2/:id', (req, res) => {
 
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/public/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, '../build/index.html'));
+// });
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);

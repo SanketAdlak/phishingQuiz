@@ -118,7 +118,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
   return (
     <div className="question-container" ref={ref}>
       <div className="question-header">
-        <h2>Question {question.id}</h2>
+        <h2>Scenario {question.id}</h2>
         <p>{question.description}</p>
       </div>
       <iframe

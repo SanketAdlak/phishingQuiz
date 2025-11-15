@@ -75,7 +75,6 @@ const CompetenceQuiz = ({ onComplete, part }) => {
 
   return (
     <div className="quiz">
-      <h1>Competence Test Part {part}</h1>
       <SwitchTransition>
         <CSSTransition
           key={currentQuestionIndex}

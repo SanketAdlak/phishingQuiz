@@ -78,8 +78,14 @@ function App() {
       {view === 'welcome' && <Welcome onStart={handleStart} />}
       {view === 'confidenceTitle' && (
         <TitlePage
-          title="Part 1: Confidence Quiz"
-          description="First, we'd like to understand your general views on digital safety. <br> You will see 10 questions. Please rate your confidence on a scale of 1 to 10, where 1 means 'Not at all Confident' and 10 means 'Very Confident'."
+          title="Part 1/3: Digital Safety Perception"
+          description={
+            <>
+              First, we'd like to understand your general views on digital safety.<br />
+              You will see 10 questions. Please rate your confidence on a scale of 1 to 10,
+              where 1 means 'Not at all Confident' and 10 means 'Very Confident'.
+            </>
+          }
           buttonText="Start Part 1"
           onStart={() => setView('confidence')}
         />
@@ -88,7 +94,11 @@ function App() {
       {view === 'competence1Title' && (
         <TitlePage
           title="Part 2/3: Digital Message Review "
-          description="You will now review 10 simulated digital messages. For each one, please decide if it is Legit or Fraud."
+          description={
+            <>
+              You will now review 10 simulated digital messages. For each one, please decide if it is Legit or Fraud.
+            </>
+          }
           buttonText="Start Part 2"
           onStart={() => setView('competence1')}
         />
@@ -97,7 +107,12 @@ function App() {
       {view === 'competence2Title' && (
         <TitlePage
           title="Part 3/3: Digital Message Review"
-          description="Great job. You are now on the final part of the exercise. <br> You will see 10 new messages. The task is the same: review each one and decide if it is Legit or Fraud. <br> Some items may include extra information or prompts to help you. Please continue to review each one carefully."
+          description={
+            <>
+              Great job. You are now on the final part of the exercise. <br /> 
+              You will see 10 new messages. The task is the same: review each one and decide if it is Legit or Fraud. <br /> Some items may include extra information or prompts to help you. Please continue to review each one carefully.
+            </>
+          }
           buttonText="Start Part 3"
           onStart={() => setView('competence2')}
         />
