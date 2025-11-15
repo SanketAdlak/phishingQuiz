@@ -54,7 +54,7 @@ const Demographics = ({ onDemographicsSubmit }) => {
 
   const cyberFraudExposureOptions = [
     'I have personally been a victim of an online scam',
-    'I have not, but someone I know has',
+    'I have not but someone I know has',
     'No, I have no significant exposure',
     'I am not sure',
   ].map((option) => (
