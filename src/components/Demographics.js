@@ -3,16 +3,18 @@ import React from 'react';
 const Demographics = ({ onDemographicsSubmit }) => {
   const [demographics, setDemographics] = React.useState({
     age: '',
-    year: '',
+    gender: '',
     degree: '',
-    course: '',
+    cybersecurityTraining: '',
+    cyberFraudExposure: '',
   });
 
   const handleChange = (e) => {
-    setDemographics({
-      ...demographics,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setDemographics((prevDemographics) => ({
+      ...prevDemographics,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
@@ -20,23 +22,37 @@ const Demographics = ({ onDemographicsSubmit }) => {
     onDemographicsSubmit(demographics);
   };
 
-  const ageOptions = [];
-  for (let i = 15; i <= 60; i++) {
-    ageOptions.push(<option key={i} value={i}>{i}</option>);
-  }
-
-  const yearOptions = [1, 2, 3, 4, 5, 6, 'Other'].map((year) => (
-    <option key={year} value={year}>{year}</option>
+  const ageOptions = [
+    '17 or younger',
+    '18-20',
+    '21-23',
+    '24-26',
+    '27 or older',
+  ].map((age) => (
+    <option key={age} value={age}>
+      {age}
+    </option>
   ));
 
-  const degreeOptions = ['BTech', 'MTech', 'Dual Degree', 'PhD', 'Other'].map((degree) => (
-    <option key={degree} value={degree}>{degree}</option>
+  const genderOptions = ['Male', 'Female', 'Non-Binary', 'Prefer not to say'];
+
+  const degreeOptions = ['Undergraduate', 'Postgraduate', 'Other'].map((degree) => (
+    <option key={degree} value={degree}>
+      {degree}
+    </option>
   ));
+
+  const cyberFraudExposureOptions = [
+    'I have personally been a victim of an online scam',
+    'I have not, but someone I know has',
+    'No, I have no significant exposure',
+    'I am not sure',
+  ];
 
   return (
     <div className="demographics-container">
-      <h1>Demographics</h1>
-      <p>Please provide some demographic information.</p>
+      <h1>Final Information</h1>
+      <p>Just a few final questions to help us understand the results. Don't worry, your responses will remain anonymous and confidential!</p>
       <form onSubmit={handleSubmit} className="demographics-form">
         <div className="form-group">
           <label htmlFor="age">Age</label>
@@ -46,50 +62,112 @@ const Demographics = ({ onDemographicsSubmit }) => {
             value={demographics.age}
             onChange={handleChange}
             className="form-control"
+            required
           >
             <option value="">Select Age</option>
             {ageOptions}
           </select>
         </div>
+
         <div className="form-group">
-          <label htmlFor="year">Year of Study</label>
-          <select
-            id="year"
-            name="year"
-            value={demographics.year}
-            onChange={handleChange}
-            className="form-control"
-          >
-            <option value="">Select Year</option>
-            {yearOptions}
-          </select>
+          <label>Gender</label>
+          <div className="radio-group-options">
+            {genderOptions.map((option) => (
+              <div key={option} className="form-check">
+                <input
+                  type="radio"
+                  id={`gender-${option}`}
+                  name="gender"
+                  value={option}
+                  checked={demographics.gender === option}
+                  onChange={handleChange}
+                  className="form-check-input"
+                  required
+                />
+                <label htmlFor={`gender-${option}`} className="form-check-label">
+                  {option}
+                </label>
+              </div>
+            ))}
+          </div>
         </div>
+
         <div className="form-group">
-          <label htmlFor="degree">Degree Program</label>
+          <label htmlFor="degree">Degree</label>
           <select
             id="degree"
             name="degree"
             value={demographics.degree}
             onChange={handleChange}
             className="form-control"
+            required
           >
             <option value="">Select Degree</option>
             {degreeOptions}
           </select>
         </div>
+
         <div className="form-group">
-          <label htmlFor="course">Branch</label>
-          <input
-            type="text"
-            className="form-control"
-            id="course"
-            name="course"
-            value={demographics.course}
-            onChange={handleChange}
-          />
+          <label>Prior Cybersecurity Training</label>
+          <div className="radio-group-options">
+            <div className="form-check">
+              <input
+                type="radio"
+                id="cybersecurityTraining-yes"
+                name="cybersecurityTraining"
+                value="Yes"
+                checked={demographics.cybersecurityTraining === 'Yes'}
+                onChange={handleChange}
+                className="form-check-input"
+                required
+              />
+              <label htmlFor="cybersecurityTraining-yes" className="form-check-label">
+                Yes
+              </label>
+            </div>
+            <div className="form-check">
+              <input
+                type="radio"
+                id="cybersecurityTraining-no"
+                name="cybersecurityTraining"
+                value="No"
+                checked={demographics.cybersecurityTraining === 'No'}
+                onChange={handleChange}
+                className="form-check-input"
+                required
+              />
+              <label htmlFor="cybersecurityTraining-no" className="form-check-label">
+                No
+              </label>
+            </div>
+          </div>
         </div>
+
+        <div className="form-group">
+          <label>Prior Exposure to Cyber Fraud</label>
+          <div className="radio-group-options">
+            {cyberFraudExposureOptions.map((option) => (
+              <div key={option} className="form-check">
+                <input
+                  type="radio"
+                  id={`cyberFraudExposure-${option.replace(/\s/g, '-')}`}
+                  name="cyberFraudExposure"
+                  value={option}
+                  checked={demographics.cyberFraudExposure === option}
+                  onChange={handleChange}
+                  className="form-check-input"
+                  required
+                />
+                <label htmlFor={`cyberFraudExposure-${option.replace(/\s/g, '-')}`} className="form-check-label">
+                  {option}
+                </label>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <button type="submit" className="btn btn-primary btn-submit">
-          Submit
+          Submit & Finish
         </button>
       </form>
     </div>
@@ -97,3 +175,4 @@ const Demographics = ({ onDemographicsSubmit }) => {
 };
 
 export default Demographics;
+
