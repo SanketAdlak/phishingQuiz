@@ -5,9 +5,23 @@ const path = require('path');
 const cors = require('cors');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
+const { BlobServiceClient } = require('@azure/storage-blob');
+require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3001;
+
+// Azure Storage Configuration
+const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const AZURE_STORAGE_CONTAINER_NAME = process.env.AZURE_STORAGE_CONTAINER_NAME;
+
+let containerClient;
+if (AZURE_STORAGE_CONNECTION_STRING && AZURE_STORAGE_CONNECTION_STRING !== 'your_connection_string' && AZURE_STORAGE_CONTAINER_NAME) {
+  const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+  containerClient = blobServiceClient.getContainerClient(AZURE_STORAGE_CONTAINER_NAME);
+} else {
+  console.log("Azure Storage environment variables not set. Server starting without Azure Blob Storage functionality.");
+}
 
 // Rate limiting to prevent abuse; removing as university address might have many users with same IP
 // const limiter = rateLimit({
@@ -48,6 +62,19 @@ const submissionValidationRules = [
   body('demographics.cybersecurityTraining').optional().isString(),
   body('demographics.cyberFraudExposure').optional().isString(),
 ];
+
+async function uploadToAzure(data, blobName) {
+  if (!containerClient) {
+    return;
+  }
+  try {
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+    await blockBlobClient.upload(data, data.length);
+    console.log(`Upload block blob ${blobName} successfully`);
+  } catch (error) {
+    console.error(`Error uploading to Azure: ${error.message}`);
+  }
+}
 
 app.post(
   '/api/submit',
@@ -100,6 +127,9 @@ app.post(
     const csvRow = csvHeader.map(header => rowData[header]).join(',');
     const csvLine = csvRow + '\n';
     const csvHeaderLine = csvHeader.join(',') + '\n';
+    const singleSubmissionCsv = csvHeaderLine + csvLine;
+    const blobName = `${responseId}.csv`;
+    uploadToAzure(singleSubmissionCsv, blobName);
 
     // Use a lock file to prevent race conditions
     const lockFilePath = path.join(__dirname, 'results.lock');
