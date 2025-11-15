@@ -26,7 +26,8 @@ const CompetenceQuiz = ({ onComplete, part }) => {
     if (currentQuestionIndex > totalQuestions && totalQuestions > 0) {
       return;
     }
-    fetch(`/api/question${part}/${currentQuestionIndex}`)
+    const questionIdToFetch = part === 2 ? currentQuestionIndex + 10 : currentQuestionIndex;
+    fetch(`/api/question${part}/${questionIdToFetch}`)
       .then((res) => {
         if (!res.ok) {
           res.text().then(text => {

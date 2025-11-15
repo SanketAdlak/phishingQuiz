@@ -316,3 +316,11 @@
 .btn-submit:hover {
   background-color: #0056b3;
 }
+
+.hint-box {
+  background-color: #fffbe6;
+  border: 1px solid #ffe58f;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 15px 0;
+}

@@ -119,13 +119,17 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
     <div className="question-container" ref={ref}>
       <div className="question-header">
         <h2>Scenario {question.id}</h2>
-        <p>{question.description}</p>
+        {question.id > 10 ? (
+          <div className="hint-box" dangerouslySetInnerHTML={{ __html: question.description }} />
+        ) : (
+          <p>{question.description}</p>
+        )}
       </div>
       <iframe
         ref={scenarioRef}
         title="scenario-content"
         srcDoc={question.scenario.html}
-        style={{ width: '80%', minHeight: '70vh', border: 'none', overflow: 'hidden' }} // Removed fixed height, added overflow hidden
+        style={{ width: '80%', minHeight: '70vh', border: '2px solid #494545ff', borderRadius: 10, overflow: 'hidden' }} // Removed fixed height, added overflow hidden
       />
       <div className="answers">
         <button className="legitimate-btn" onClick={() => handleAnswer('legitimate')}>Legit</button>
