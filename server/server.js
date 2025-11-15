@@ -78,7 +78,7 @@ app.post(
       const questionId = result.questionId;
       
       if (result.type === 'confidence') {
-        const questionHeaderId = `ConfidenceQ${questionId}`;
+        const questionHeaderId = `confidenceQuestionID${questionId}`;
         csvHeader.push(questionHeaderId);
         rowData[questionHeaderId] = result.answer;
       } else {
