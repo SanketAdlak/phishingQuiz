@@ -63,16 +63,23 @@ const submissionValidationRules = [
   body('demographics.cyberFraudExposure').optional().isString(),
 ];
 
-async function uploadToAzure(data, blobName) {
+async function uploadToAzure(csvLine, csvHeaderLine) {
   if (!containerClient) {
     return;
   }
+  const blobName = "results.csv";
+  const appendBlobClient = containerClient.getAppendBlobClient(blobName);
+
   try {
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-    await blockBlobClient.upload(data, data.length);
-    console.log(`Upload block blob ${blobName} successfully`);
+    const blobExists = await appendBlobClient.exists();
+    if (!blobExists) {
+      await appendBlobClient.create();
+      await appendBlobClient.appendBlock(csvHeaderLine, csvHeaderLine.length);
+    }
+    await appendBlobClient.appendBlock(csvLine, csvLine.length);
+    console.log(`Appended data to blob ${blobName} successfully`);
   } catch (error) {
-    console.error(`Error uploading to Azure: ${error.message}`);
+    console.error(`Error appending to Azure: ${error.message}`);
   }
 }
 
@@ -127,9 +134,8 @@ app.post(
     const csvRow = csvHeader.map(header => rowData[header]).join(',');
     const csvLine = csvRow + '\n';
     const csvHeaderLine = csvHeader.join(',') + '\n';
-    const singleSubmissionCsv = csvHeaderLine + csvLine;
-    const blobName = `${responseId}.csv`;
-    uploadToAzure(singleSubmissionCsv, blobName);
+    
+    uploadToAzure(csvLine, csvHeaderLine);
 
     // Use a lock file to prevent race conditions
     const lockFilePath = path.join(__dirname, 'results.lock');
