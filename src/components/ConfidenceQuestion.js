@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 
-const ConfidenceQuestion = ({ question, onAnswer, submitButtonClassName }) => {
-  const [answer, setAnswer] = useState(3);
+const ConfidenceQuestion = React.forwardRef(({ question, onAnswer, submitButtonClassName }, ref) => {
+  const [answer, setAnswer] = useState(null);
 
   const handleAnswer = () => {
+    if (answer === null) return;
     onAnswer({
       questionId: question.id,
       answer,
@@ -12,31 +13,39 @@ const ConfidenceQuestion = ({ question, onAnswer, submitButtonClassName }) => {
   };
 
   return (
-    <div className="question-container">
+    <div className="question-container" ref={ref}>
       <div className="question-header">
-        <h2>{question.question}</h2>
+        <h2>{question.text}</h2>
       </div>
       <div className="slider-container">
         <div className="slider-wrapper">
           <input
             type="range"
             min="1"
-            max="5"
-            value={answer}
+            max="10"
+            value={answer || ''}
             className="slider"
             onChange={(e) => setAnswer(e.target.value)}
           />
           <div className="slider-labels">
-            <span>Strongly disagree</span>
-            <span>Strongly agree</span>
+            <span>Not at all Confident</span>
+            <span>Very Confident</span>
           </div>
+          {answer && <div className="slider-score">{answer}/10</div>}
         </div>
       </div>
       <div className="answers">
-        <button className={submitButtonClassName} onClick={handleAnswer}>Submit</button>
+        <button
+          className={submitButtonClassName}
+          onClick={handleAnswer}
+          disabled={answer === null}
+        >
+          Submit
+        </button>
       </div>
     </div>
   );
-};
+});
 
 export default ConfidenceQuestion;
+

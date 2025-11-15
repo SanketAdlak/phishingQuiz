@@ -53,7 +53,7 @@ const ConfidenceQuiz = ({ onComplete }) => {
           />
         </CSSTransition>
       </SwitchTransition>
-      <ProgressBar current={currentQuestionIndex} total={totalQuestions} />
+      <ProgressBar current={results.length} total={totalQuestions} />
     </div>
   );
 };
