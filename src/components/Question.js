@@ -1,23 +1,25 @@
 import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
 import { toast } from 'react-toastify';
+import ConfidenceSlider from './ConfidenceSlider';
 
 const Question = forwardRef(({ question, onAnswer }, ref) => {
   const [startTime, setStartTime] = useState(0);
+  const [timeRemaining, setTimeRemaining] = useState(120);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [confidence, setConfidence] = useState(7);
+  const [sliderInteracted, setSliderInteracted] = useState(false);
   const clickedPhishingRef = useRef(false);
   const urlViewedRef = useRef(false);
   const scenarioRef = useRef(null);
+  const timerRef = useRef(null);
 
-  // Function to handle messages from the iframe
   const handleIframeMessage = useCallback((event) => {
-    // Ensure the message is from the expected iframe (optional, but good practice)
-    // For srcdoc, origin will be the parent's origin.
     if (event.source === scenarioRef.current.contentWindow) {
       if (event.data.type === 'phishingClick') {
         handlePhishingLinkClick(event.data.event);
       } else if (event.data.type === 'urlView') {
         handleUrlView(event.data.event);
       } else if (event.data.type === 'iframeHeight') {
-        // Update iframe height based on content
         if (scenarioRef.current) {
           scenarioRef.current.style.height = `${event.data.height}px`;
         }
@@ -29,9 +31,18 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
     setStartTime(Date.now());
     clickedPhishingRef.current = false;
     urlViewedRef.current = false;
+    setSelectedAnswer(null);
+    setConfidence(7);
+    setSliderInteracted(false);
+    setTimeRemaining(120);
+
+    if (question.id <= 10) {
+      timerRef.current = setInterval(() => {
+        setTimeRemaining(prevTime => prevTime - 1);
+      }, 1000);
+    }
 
     const iframe = scenarioRef.current;
-
     const injectScript = () => {
       if (iframe && iframe.contentDocument) {
         const script = iframe.contentDocument.createElement('script');
@@ -40,11 +51,10 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
           let hoverTimeout;
           document.addEventListener('click', (e) => {
             if (e.target.tagName === 'A') {
-              e.preventDefault(); // Prevent navigation within the iframe
+              e.preventDefault();
               window.parent.postMessage({ type: 'phishingClick', event: { targetTagName: 'A' } }, '*');
             }
           });
-
           document.addEventListener('mouseover', (e) => {
             if (e.target.tagName === 'A') {
               hoverTimeout = setTimeout(() => {
@@ -52,14 +62,11 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
               }, 500);
             }
           });
-
           document.addEventListener('mouseout', (e) => {
             if (e.target.tagName === 'A') {
               clearTimeout(hoverTimeout);
             }
           });
-
-          // Observe content height and report to parent
           const resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
               window.parent.postMessage({ type: 'iframeHeight', height: entry.contentRect.height }, '*');
@@ -71,31 +78,22 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
       }
     };
 
-    // Attach load listener to iframe
     if (iframe) {
       iframe.onload = injectScript;
     }
-
-    // Add message listener to window
     window.addEventListener('message', handleIframeMessage);
 
     return () => {
-      // Clean up message listener
+      clearInterval(timerRef.current);
       window.removeEventListener('message', handleIframeMessage);
       if (iframe) {
-        iframe.onload = null; // Remove iframe load listener
+        iframe.onload = null;
       }
     };
-  }, [question, handleIframeMessage]); // Re-run effect when question changes
+  }, [question, handleIframeMessage]);
 
   const handlePhishingLinkClick = (e) => {
-    // e.preventDefault(); // Already prevented in iframe script
     clickedPhishingRef.current = true;
-    // if (question.scenario.isPhishing) {
-    //   toast.warn(question.scenario.toastMessage);
-    // } else {
-    //   toast.success(question.scenario.toastMessage);
-    // }
   };
 
   const handleUrlView = (e) => {
@@ -104,22 +102,67 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
     }
   };
 
-  const handleAnswer = (answer) => {
+  const handleAnswerSelect = (answer) => {
+    setSelectedAnswer(answer);
+  };
+
+  const handleConfidenceChange = (e) => {
+    setConfidence(e.target.value);
+  };
+
+  const handleSliderInteraction = () => {
+    setSliderInteracted(true);
+  };
+
+  const handleSubmit = () => {
+    if (!selectedAnswer) {
+      toast.error('Please select an answer (Legit or Fraud) before submitting.');
+      return;
+    }
+    if (!sliderInteracted) {
+      toast.error('Please adjust the confidence slider before submitting.');
+      return;
+    }
+
     const timeTaken = (Date.now() - startTime) / 1000;
     onAnswer({
-      answer,
+      answer: selectedAnswer,
       timeTaken,
       clickedPhishingLink: clickedPhishingRef.current,
       urlViewed: urlViewedRef.current,
+      confidence: confidence,
     });
     toast.success('Response received!');
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleDisabledSubmit = () => {
+    if (!selectedAnswer && !sliderInteracted) {
+      toast.error('Please select an answer and adjust the confidence slider before submitting.');
+    } else if (!selectedAnswer) {
+      toast.error('Please select an answer (Legit or Fraud) before submitting.');
+    } else if (!sliderInteracted) {
+      toast.error('Please adjust the confidence slider before submitting.');
+    }
+  };
+
+  const formatTime = (seconds) => {
+    const isNegative = seconds < 0;
+    const absSeconds = Math.abs(seconds);
+    const mins = Math.floor(absSeconds / 60);
+    const secs = absSeconds % 60;
+    return `${isNegative ? '-' : ''}${mins}:${secs < 10 ? '0' : ''}${secs}`;
   };
 
   return (
     <div className="question-container" ref={ref}>
       <div className="question-header">
         <h2>Scenario {question.id}</h2>
+        {question.id <= 10 && (
+          <div className={`timer ${timeRemaining < 0 ? 'red' : ''}`}>
+            {formatTime(timeRemaining)}
+          </div>
+        )}
         {question.id > 10 ? (
           <div className="hint-box" dangerouslySetInnerHTML={{ __html: question.description }} />
         ) : (
@@ -130,12 +173,36 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
         ref={scenarioRef}
         title="scenario-content"
         srcDoc={question.scenario.html}
-        style={{ width: '80%', minHeight: '70vh', border: '2px solid #494545ff', borderRadius: 10, overflow: 'hidden' }} // Removed fixed height, added overflow hidden
+        style={{ width: '80%', minHeight: '70vh', border: '2px solid #494545ff', borderRadius: 10, overflow: 'hidden' }}
       />
       <div className="answers">
-        <button className="legitimate-btn" onClick={() => handleAnswer('legitimate')}>Legit</button>
-        <button className="phishing-btn" onClick={() => handleAnswer('phishing')}>Fraud</button>
+        <button
+          className={`legitimate-btn ${selectedAnswer === 'legitimate' ? 'selected' : ''}`}
+          onClick={() => handleAnswerSelect('legitimate')}
+        >
+          Legit
+        </button>
+        <button
+          className={`phishing-btn ${selectedAnswer === 'phishing' ? 'selected' : ''}`}
+          onClick={() => handleAnswerSelect('phishing')}
+        >
+          Fraud
+        </button>
       </div>
+      <ConfidenceSlider
+        confidence={confidence}
+        onConfidenceChange={handleConfidenceChange}
+        onInteraction={handleSliderInteraction}
+        min={0}
+        max={10}
+      />
+      <button
+        className="submit-btn"
+        onClick={selectedAnswer && sliderInteracted ? handleSubmit : handleDisabledSubmit}
+        disabled={false} // Always enabled, but calls handleDisabledSubmit if conditions not met
+      >
+        Submit
+      </button>
     </div>
   );
 });
