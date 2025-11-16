@@ -37,7 +37,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../build')));
+// app.use(express.static(path.join(__dirname, '../build')));
 
 const resultsFilePath = path.join(__dirname, 'results.json');
 const csvFilePath = path.join(__dirname, 'results.csv');
@@ -122,12 +122,16 @@ app.post(
         const timeTakenHeader = `timeTaken${questionHeaderId}`;
         const phishingClickHeader = `ClickOnPhishingContent${questionHeaderId}`;
         const urlViewedHeader = `urlViewed${questionHeaderId}`;
+        const postConfidenceHeader = `PostConfidence${questionHeaderId}`;
 
-        csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader, urlViewedHeader);
+        csvHeader.push(answerHeader, timeTakenHeader, phishingClickHeader, urlViewedHeader, postConfidenceHeader);
         rowData[answerHeader] = result.answer === 'legitimate' ? 'Legit' : 'Fraud';
         rowData[timeTakenHeader] = result.timeTaken;
         rowData[phishingClickHeader] = result.clickedPhishingLink;
         rowData[urlViewedHeader] = result.urlViewed;
+        if (result.confidence) {
+          rowData[postConfidenceHeader] = result.confidence;
+        }
       }
     });
 
@@ -242,11 +246,13 @@ app.get('/api/question2/:id', (req, res) => {
   res.json(question);
 });
 
+// app.use(express.static(path.join(__dirname, 'build')));
+
 // The "catchall" handler: for any request that doesn't
 // match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'build/index.html'));
+// });
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
