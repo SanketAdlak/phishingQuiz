@@ -96,7 +96,7 @@ function App() {
           title="Part 2/3: Digital Message Review "
           description={
             <>
-              You will now review 10 simulated digital messages. For each one, please decide if it is Legit or Fraud.
+              You will now review 10 simulated digital messages. For each one, please decide if it is Legit or Fraud. You get 30 seconds per scenario. <br />
             </>
           }
           buttonText="Start Part 2"
@@ -110,7 +110,7 @@ function App() {
           description={
             <>
               Great job. You are now on the final part of the exercise. <br /> 
-              You will see 10 new messages. The task is the same: review each one and decide if it is Legit or Fraud. <br /> Some items may include extra information or prompts to help you. Please continue to review each one carefully.
+              You will see 10 new messages. The task is the same: review each one and decide if it is Legit or Fraud. <br /> Some items may include extra information or prompts to help you. Please continue to review each one carefully. There is no time limit for this part.
             </>
           }
           buttonText="Start Part 3"

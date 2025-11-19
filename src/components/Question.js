@@ -34,7 +34,7 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
     setSelectedAnswer(null);
     setConfidence(7);
     setSliderInteracted(false);
-    setTimeRemaining(120);
+    setTimeRemaining(30);
 
     if (question.id <= 10) {
       timerRef.current = setInterval(() => {
