@@ -6,12 +6,15 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
   const [startTime, setStartTime] = useState(0);
   const [timeRemaining, setTimeRemaining] = useState(120);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [confidence, setConfidence] = useState(7);
+  const [confidence, setConfidence] = useState(1);
   const [sliderInteracted, setSliderInteracted] = useState(false);
+  const [showHint, setShowHint] = useState(false);
+  const [highlightHint, setHighlightHint] = useState(false); // New state for highlighting
   const clickedPhishingRef = useRef(false);
   const urlViewedRef = useRef(false);
   const scenarioRef = useRef(null);
   const timerRef = useRef(null);
+  const hintBoxRef = useRef(null); // New ref for the hint box
 
   const handleIframeMessage = useCallback((event) => {
     if (event.source === scenarioRef.current.contentWindow) {
@@ -32,9 +35,11 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
     clickedPhishingRef.current = false;
     urlViewedRef.current = false;
     setSelectedAnswer(null);
-    setConfidence(7);
+    setConfidence(0);
     setSliderInteracted(false);
     setTimeRemaining(30);
+    setShowHint(false);
+    setHighlightHint(false); // Reset highlight when question changes
 
     if (question.id <= 10) {
       timerRef.current = setInterval(() => {
@@ -104,8 +109,15 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
 
   const handleAnswerSelect = (answer) => {
     setSelectedAnswer(answer);
+    if (question.id > 10) { // Only show hint and scroll for questions after ID 10
+      setShowHint(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setHighlightHint(true);
+      setTimeout(() => {
+        setHighlightHint(false);
+      }, 2000); // Highlight for 2 seconds
+    }
   };
-
   const handleConfidenceChange = (e) => {
     setConfidence(e.target.value);
   };
@@ -164,7 +176,11 @@ const Question = forwardRef(({ question, onAnswer }, ref) => {
           </div>
         )}
         {question.id > 10 ? (
-          <div className="hint-box" dangerouslySetInnerHTML={{ __html: question.description }} />
+          <div
+            ref={hintBoxRef} // Attach the ref here
+            className={`hint-box ${!showHint ? 'hidden' : ''} ${highlightHint ? 'highlight' : ''}`}
+            dangerouslySetInnerHTML={{ __html: question.description }}
+          />
         ) : (
           <p>{question.description}</p>
         )}
