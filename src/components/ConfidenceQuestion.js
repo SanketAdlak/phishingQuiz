@@ -23,7 +23,7 @@ const ConfidenceQuestion = React.forwardRef(({ question, onAnswer, submitButtonC
             type="range"
             min="1"
             max="10"
-            value={answer || ''}
+            value={answer || '1'}
             className="slider"
             onChange={(e) => setAnswer(e.target.value)}
           />
