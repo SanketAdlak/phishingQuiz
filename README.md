@@ -1,70 +1,111 @@
-# Getting Started with Create React App
+# Investigating the Dunning-Kruger Effect and the Efficacy of Embedded Nudges in Phishing Detection
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains the source code for the web-based experimental application used in the project report: **"Investigating the Dunning-Kruger Effect and the Efficacy of Embedded Nudges in Phishing Detection Among Technical University Students"**.
 
-## Available Scripts
+The study explores the "confidence-competence gap" in cybersecurity, where individuals' perceived ability to detect phishing attacks often doesn't align with their actual skills. It also tests the effectiveness of subtle "nudges" embedded in the user interface to improve detection accuracy.
 
-In the project directory, you can run:
+## About the Project
 
-### `npm start`
+This application is a phishing and smishing quiz designed to simulate real-world scenarios. It presents users with a series of potential fraud messages (emails and SMS) and asks them to classify each as either "Legitimate" or "Fraudulent".
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The experiment was designed to capture data on:
+-   **Detection Accuracy:** The ability to correctly classify messages.
+-   **Decision Confidence:** A user's self-reported confidence in their classification.
+-   **Response Time:** The time taken to make a decision.
+-   **The Dunning-Kruger Effect:** The correlation between self-assessed ability and actual performance.
+-   **Nudge Efficacy:** The impact of subtle UI hints on detection accuracy and response bias.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Key Features
 
-### `npm test`
+-   **Realistic Scenarios:** Presents 20 real-world phishing and legitimate messages.
+-   **Within-Subjects Design:** Each participant experiences both a "nudged" and "un-nudged" condition.
+    -   **Un-nudged:** A baseline block of 10 questions.
+    -   **Nudged:** A treatment block of 10 questions with embedded visual warnings and hints.
+-   **Confidence & Competence Measurement:**
+    -   Pre-test questionnaire to gauge overall confidence.
+    -   Post-decision confidence rating for each question.
+-   **Data Collection:** Gathers demographic information and detailed results (accuracy, confidence, response times) for each participant.
+-   **Data Export:** Anonymously saves all experimental data into `results.csv` on the server for easy analysis.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Technology Stack
 
-### `npm run build`
+-   **Frontend:** React.js
+-   **Backend:** Node.js / Express.js
+-   **Data:** Questions and scenarios are stored in JSON files (`questions.json`, `confidence-questions.json`, etc.) on the server.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Project Structure
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+phishing-quiz/
+├── server/         # Node.js backend
+│   ├── server.js   # Express server logic
+│   ├── questions.json # Main quiz questions
+│   └── results.csv # Output data file
+│
+└── src/            # React.js frontend
+    ├── components/ # React components for the quiz UI
+    ├── App.js      # Main application component
+    └── ...
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Getting Started
 
-### `npm run eject`
+To run the experiment locally, you need to set up both the server and the client.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### Prerequisites
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+-   Node.js and npm installed on your machine.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### 1. Backend Setup
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The server handles question delivery and data recording.
 
-## Learn More
+```bash
+# Navigate to the server directory
+cd phishing-quiz/server
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Install dependencies
+npm install
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Start the server (runs on http://localhost:5000)
+npm start
+```
 
-### Code Splitting
+### 2. Frontend Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The client provides the user interface for the quiz.
 
-### Analyzing the Bundle Size
+```bash
+# Open a new terminal and navigate to the root project directory
+cd phishing-quiz
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+# Install dependencies
+npm install
 
-### Making a Progressive Web App
+# Start the React development server (runs on http://localhost:3000)
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Once both are running, open [http://localhost:3000](http://localhost:3000) in your browser to begin the experiment.
 
-### Advanced Configuration
+## Experimental Flow
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The user progresses through the application in the following order:
 
-### Deployment
+1.  **Welcome & Consent:** A title page that introduces the study.
+2.  **Demographics:** A form to collect anonymous demographic data.
+3.  **Confidence Questionnaire:** A 10-item Likert scale to assess the participant's initial confidence in their phishing detection skills.
+4.  **Quiz Part 1 (Un-nudged):** The participant answers the first 10 questions without any assistance.
+5.  **Quiz Part 2 (Nudged):** The participant answers the final 10 questions, which include embedded security nudges.
+6.  **Thank You:** A final page thanking the participant for their time.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+All results are saved to `phishing-quiz/server/results.csv` as the participant completes the quiz.
 
-### `npm run build` fails to minify
+## Citing This
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- If you use this project for your own research, please consider citing our original work.
+- *(Details to be added upon publication)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
